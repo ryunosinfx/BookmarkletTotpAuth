@@ -1,5 +1,4 @@
-import { B, Y, H, Totp, Vw, Auth } from './bookmarkletTotp.js';
-import { CanvasQRCode } from './qrcode.es.min.js';
+import { B, Y, H, Totp, Vw, Auth, CanvasQRCode } from './bookmarkletTotp.js';
 class F {
 	static async l(p, c = 'application/json', isText) {
 		const q = {

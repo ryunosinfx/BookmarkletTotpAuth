@@ -41,6 +41,17 @@ function getEF(i, l) {
 function slp(s = rsm()) {
 	return pr((r) => st(() => r(), s));
 }
+class U {
+	static u8ca = (s) => new Uint8ClampedArray(s);
+	static u8cf = (s) => Uint8ClampedArray.from(s);
+	static e(m) {
+		throw new Error(m);
+	}
+	static cat = (b, a) => Array.prototype.push.apply(b, a);
+	static A = (s) => new Array(s);
+	static n = (m, n, l) => (console.log(m, n, l) ? null : null);
+	static T = true;
+}
 //// jsQR //Apache License Version 2.0/// http://www.apache.org/licenses/ /////jsQR.es.min.nosjis.js/////////////////////////////////////////////////////////////////////////////////////////////////
 /* 10 */
 class W {
@@ -88,7 +99,7 @@ class W {
 		return a;
 	}
 	static dj(j, vm) {
-		let p = JSON.parse(JSON.stringify(W.p));
+		let p = Jp(Js(W.p));
 		for (const r of p) r.reverse();
 		p.reverse();
 		let a = W.ej(j, p);
@@ -107,8 +118,8 @@ class W {
 		}
 	}
 	static async gV() {
-		const v = JSON.parse(W.v),
-			m = JSON.parse(W.dj(W.D, v));
+		const v = Jp(W.v),
+			m = Jp(W.dj(W.D, v));
 		W.vd(m, v);
 		return m;
 	}
@@ -123,15 +134,6 @@ class W {
 		if (W.V) return;
 		W.V = await W.gV();
 	}
-	static u8ca = (s) => new Uint8ClampedArray(s);
-	static u8cf = (s) => Uint8ClampedArray.from(s);
-	static e(m) {
-		throw new Error(m);
-	}
-	static cat = (b, a) => Array.prototype.push.apply(b, a);
-	static A = (s) => new Array(s);
-	static n = (m, n, l) => (console.log(m, n, l) ? null : null);
-	static T = true;
 }
 /*0 BitMatrix*/
 class BM {
@@ -140,7 +142,7 @@ class BM {
 		this.h = d.length / w;
 		this.d = d;
 	}
-	static c = (w, h) => new BM(W.u8ca(w * h), w);
+	static c = (w, h) => new BM(U.u8ca(w * h), w);
 	g(x, y) {
 		return x < 0 || x >= this.w || y < 0 || y >= this.h ? false : !!this.d[y * this.w + x];
 	}
@@ -159,8 +161,8 @@ class GF {
 		z.p = p;
 		z.s = s;
 		z.g = g;
-		z.E = W.A(z.s);
-		z.L = W.A(z.s);
+		z.E = U.A(z.s);
+		z.L = U.A(z.s);
 		let x = 1;
 		for (let i = 0; i < z.s; i++) {
 			z.E[i] = x;
@@ -168,26 +170,24 @@ class GF {
 			if (x >= z.s) x = (x ^ z.p) & (z.s - 1);
 		}
 		for (let i = 0; i < z.s - 1; i++) z.L[z.E[i]] = i;
-		z.zero = new GP(z, W.u8cf([0]));
-		z.one = new GP(z, W.u8cf([1]));
+		z.zero = new GP(z, U.u8cf([0]));
+		z.one = new GP(z, U.u8cf([1]));
 	}
 	m(a, b) {
 		return a === 0 || b === 0 ? 0 : this.E[(this.L[a] + this.L[b]) % (this.s - 1)];
 	}
 	i(a) {
-		if (a === 0) W.e("Can't invert 0");
-		return this.E[this.s - this.L[a] - 1];
+		return a === 0 ? U.e("Can't invert 0") : this.E[this.s - this.L[a] - 1];
 	}
 	b(d, c) {
-		if (d < 0) W.e('Invalid monomial degree less than 0');
+		if (d < 0) U.e('Invalid monomial degree less than 0');
 		if (c === 0) return this.zero;
-		const e = W.u8ca(d + 1);
+		const e = U.u8ca(d + 1);
 		e[0] = c;
 		return new GP(this, e);
 	}
 	l(a) {
-		if (a === 0) W.e("Can't take log(0)");
-		return this.L[a];
+		return a === 0 ? U.e("Can't take log(0)") : this.L[a];
 	}
 	e(a) {
 		return this.E[a];
@@ -196,7 +196,7 @@ class GF {
 /* 2 GenericGFPoly*/
 class GP {
 	constructor(f, c) {
-		if (c.length === 0) W.e('No coefficients.');
+		if (c.length === 0) U.e('No coefficients.');
 		const z = this,
 			l = c.length;
 		z.F = f;
@@ -205,7 +205,7 @@ class GP {
 			while (f < l && c[f] === 0) f++;
 			if (f === l) z.C = f.zero.C;
 			else {
-				z.C = W.u8ca(l - f);
+				z.C = U.u8ca(l - f);
 				for (let i = 0; i < z.C.length; i++) z.C[i] = c[f + i];
 			}
 		} else z.C = c;
@@ -227,7 +227,7 @@ class GP {
 			b = o.C;
 		const j = [b, a];
 		if (a.length > b.length) (a = j[0]), (b = j[1]);
-		const c = W.u8ca(b.length),
+		const c = U.u8ca(b.length),
 			d = b.length - a.length;
 		for (let i = 0; i < d; i++) c[i] = b[i];
 		for (let i = d; i < b.length; i++) c[i] = GF.a(a[i - d], b[i]);
@@ -238,7 +238,7 @@ class GP {
 		if (s === 0) return z.F.zero;
 		if (s === 1) return z;
 		const e = z.C.length,
-			p = W.u8ca(e);
+			p = U.u8ca(e);
 		for (let i = 0; i < e; i++) p[i] = z.F.m(z.C[i], s);
 		return new GP(z.F, p);
 	}
@@ -248,7 +248,7 @@ class GP {
 			c = b.length,
 			d = o.C,
 			e = d.length,
-			p = W.u8ca(c + e - 1);
+			p = U.u8ca(c + e - 1);
 		if (z.z() || o.z()) return z.F.zero;
 		for (let i = 0; i < c; i++) {
 			const a = b[i];
@@ -257,10 +257,10 @@ class GP {
 		return new GP(z.F, p);
 	}
 	b(d, c) {
-		if (d < 0) W.e('Invalid degree less than 0');
+		if (d < 0) U.e('Invalid degree less than 0');
 		if (c === 0) return this.F.zero;
 		const s = this.C.length,
-			p = W.u8ca(s + d);
+			p = U.u8ca(s + d);
 		for (let i = 0; i < s; i++) p[i] = this.F.m(this.C[i], c);
 		return new GP(this.F, p);
 	}
@@ -294,7 +294,7 @@ class RS {
 				j = g;
 			e = r;
 			g = t;
-			if (e.z()) return W.n('RS fEA rL.z():' + e.z(), f, a);
+			if (e.z()) return U.n('RS fEA rL.z():' + e.z(), f, a);
 			r = h;
 			let q = f.zero;
 			const k = e.c(e.d()),
@@ -306,28 +306,28 @@ class RS {
 				r = r.a(e.b(n, s));
 			}
 			t = q.p(g).a(j);
-			if (r.d() >= e.d()) return W.n('RS fEA r.d():' + r.d() + '">=rL.d():' + e.d(), f, a);
+			if (r.d() >= e.d()) return U.n('RS fEA r.d():' + r.d() + '">=rL.d():' + e.d(), f, a);
 		}
 		const s = t.c(0);
-		if (s === 0) return W.n('RS fEA s', s, R);
+		if (s === 0) return U.n('RS fEA s', s, R);
 		const o = f.i(s);
 		return [t.m(o), r.m(o)];
 	}
 	static L(f, l) {
 		const n = l.d();
 		if (n === 1) return [l.c(1)];
-		const r = W.A(n);
+		const r = U.A(n);
 		let c = 0;
 		for (let i = 1; i < f.s && c < n; i++)
 			if (l.e(i) === 0) {
 				r[c] = f.i(i);
 				c++;
 			}
-		return c !== n ? W.n('RS fEL eC', c, n) : r;
+		return c !== n ? U.n('RS fEL eC', c, n) : r;
 	}
 	static M(f, e, l) {
 		const s = l.length;
-		const r = W.A(s);
+		const r = U.A(s);
 		for (let i = 0; i < s; i++) {
 			const xi = f.i(l[i]);
 			let d = 1;
@@ -338,28 +338,28 @@ class RS {
 		return r;
 	}
 	static dec(b, s2) {
-		const u = W.u8ca(b.length);
+		const u = U.u8ca(b.length);
 		u.set(b);
 		const f = new GF(0x011d, 256, 0),
 			p = new GP(f, u),
-			q = W.u8ca(s2);
+			q = U.u8ca(s2);
 		let e = false;
 		for (let s = 0; s < s2; s++) {
 			const t = f.e(s + f.g);
 			const z = p.e(t);
 			q[q.length - 1 - s] = z;
-			if (z !== 0) e = W.T;
+			if (z !== 0) e = U.T;
 		}
 		if (!e) return u;
 		const y = new GP(f, q),
 			o = RS.E(f, f.b(s2, 1), y, s2);
-		if (o === null) return W.n('RS dec o', o, y);
+		if (o === null) return U.n('RS dec o', o, y);
 		const l = RS.L(f, o[0]);
-		if (l == null) return W.n('RS dec l', l, f);
+		if (l == null) return U.n('RS dec l', l, f);
 		const t = RS.M(f, o[1], l);
 		for (let i = 0; i < l.length; i++) {
 			const r = u.length - 1 - f.l(l[i]);
-			if (r < 0) return W.n('RS dec r', r, t);
+			if (r < 0) return U.n('RS dec r', r, t);
 			u[r] = GF.a(u[r], t[i]);
 		}
 		return u;
@@ -369,7 +369,7 @@ class RS {
 class Mx {
 	constructor(w, h) {
 		this.w = w;
-		this.d = W.u8ca(w * h);
+		this.d = U.u8ca(w * h);
 	}
 	g(x, y) {
 		return this.d[y * this.w + x];
@@ -383,7 +383,7 @@ class BZ {
 	static M = 24;
 	static n = (v, i, x) => (v < i ? i : v > x ? x : v);
 	static b(d, w, h, r) {
-		if (d.length !== w * h * 4) W.e('Malformed data passed to binarizer.');
+		if (d.length !== w * h * 4) U.e('Malformed data passed to binarizer.');
 		const a = new Mx(w, h);
 		for (let x = 0; x < w; x++)
 			for (let y = 0; y < h; y++) {
@@ -448,7 +448,7 @@ class BS {
 	}
 	r(a) {
 		const z = this;
-		if (a < 1 || a > 32 || a > z.a()) W.e(`Cannot read ${a.toString()} bits`);
+		if (a < 1 || a > 32 || a > z.a()) U.e(`Cannot read ${a.toString()} bits`);
 		let r = 0;
 		if (z.bio > 0) {
 			const c = 8 - z.bio,
@@ -509,7 +509,7 @@ class DD {
 				a = Math.floor(n / 100),
 				d = Math.floor(n / 10) % 10,
 				c = n % 10;
-			if (n >= 1000) W.e('Invalid numeric value above 999');
+			if (n >= 1000) U.e('Invalid numeric value above 999');
 			b.push(48 + a, 48 + d, 48 + c);
 			t += a.toString() + d.toString() + c.toString();
 			l -= 3;
@@ -518,12 +518,12 @@ class DD {
 			const n = m.r(7),
 				a = Math.floor(n / 10),
 				d = n % 10;
-			if (n >= 100) W.e('Invalid numeric value above 99');
+			if (n >= 100) U.e('Invalid numeric value above 99');
 			b.push(48 + a, 48 + d);
 			t += a.toString() + d.toString();
 		} else if (l === 1) {
 			const n = m.r(4);
-			if (n >= 10) W.e('Invalid numeric value above 9');
+			if (n >= 10) U.e('Invalid numeric value above 9');
 			b.push(48 + n);
 			t += n.toString();
 		}
@@ -619,7 +619,7 @@ class DD {
 			} else if (m === B.Numeric) {
 				const N = DD.dN(s, z);
 				r.t += N.t;
-				W.cat(b, N.b);
+				U.cat(b, N.b);
 				c.push({
 					type: M.Numeric,
 					text: N.t,
@@ -627,7 +627,7 @@ class DD {
 			} else if (m === B.Alphanumeric) {
 				const A = DD.dA(s, z);
 				r.t += A.t;
-				W.cat(b, A.b);
+				U.cat(b, A.b);
 				c.push({
 					type: M.Alphanumeric,
 					text: A.t,
@@ -635,7 +635,7 @@ class DD {
 			} else if (m === B.Byte) {
 				const B = DD.dB(s, z);
 				r.t += B.t;
-				W.cat(b, B.b);
+				U.cat(b, B.b);
 				c.push({
 					type: M.Byte,
 					bytes: B.b,
@@ -644,7 +644,7 @@ class DD {
 			} else if (m === B.Kanji) {
 				const K = DD.dK(s, z);
 				r.t += K.t;
-				W.cat(b, K.b);
+				U.cat(b, K.b);
 				c.push({
 					type: M.Kanji,
 					bytes: K.b,
@@ -714,18 +714,18 @@ class DC {
 	static m(v) {
 		const d = 17 + 4 * v.versionNumber,
 			m = BM.c(d, d);
-		m.r(0, 0, 9, 9, W.T);
-		m.r(d - 8, 0, 8, 9, W.T);
-		m.r(0, d - 8, 9, 8, W.T);
+		m.r(0, 0, 9, 9, U.T);
+		m.r(d - 8, 0, 8, 9, U.T);
+		m.r(0, d - 8, 9, 8, U.T);
 		for (const x of v.alignmentPatternCenters)
 			for (const y of v.alignmentPatternCenters)
 				if (!((x === 6 && y === 6) || (x === 6 && y === d - 7) || (x === d - 7 && y === 6)))
-					m.r(x - 2, y - 2, 5, 5, W.T);
-		m.r(6, 9, 1, d - 17, W.T);
-		m.r(9, 6, d - 17, 1, W.T);
+					m.r(x - 2, y - 2, 5, 5, U.T);
+		m.r(6, 9, 1, d - 17, U.T);
+		m.r(9, 6, d - 17, 1, U.T);
 		if (v.versionNumber > 6) {
-			m.r(d - 11, 0, 3, 6, W.T);
-			m.r(0, d - 11, 6, 3, W.T);
+			m.r(d - 11, 0, 3, 6, U.T);
+			m.r(0, d - 11, 6, 3, U.T);
 		}
 		return m;
 	}
@@ -736,7 +736,7 @@ class DC {
 			c = [];
 		let n = 0,
 			b = 0,
-			h = W.T;
+			h = U.T;
 		for (let j = d - 1; j > 0; j -= 2) {
 			if (j === 6) j--;
 			for (let i = 0; i < d; i++) {
@@ -783,7 +783,7 @@ class DC {
 				e = h;
 			}
 		}
-		return e <= 3 ? f : W.n(`readVersion bD:${e}`);
+		return e <= 3 ? f : U.n(`readVersion bD:${e}`);
 	}
 	static f(m) {
 		let e = 0,
@@ -812,12 +812,13 @@ class DC {
 				}
 			}
 		}
-		return g <= 3 ? h : W.n('readFormatInformation bD:' + g);
+		return g <= 3 ? h : U.n('readFormatInformation bD:' + g);
 	}
 	static b(c, v, e) {
 		const z = v.errorCorrectionLevels[e],
 			x = [],
-			f = z.ecBlocks;
+			f = z.ecBlocks,
+			s = f[0].dataCodewordsPerBlock;
 		let y = 0;
 		for (const b of f)
 			for (let i = 0; i < b.numBlocks; i++) {
@@ -825,9 +826,8 @@ class DC {
 				x.push({ nD, cw: [] });
 				y += nD + z.ecCodewordsPerBlock;
 			}
-		if (c.length < y) return W.n(`getDataBlocks codeWs.length < tc:${y}/codeWs:${c.length}`);
+		if (c.length < y) return U.n(`getDataBlocks codeWs.length < tc:${y}/codeWs:${c.length}`);
 		c = c.slice(0, y);
-		const s = f[0].dataCodewordsPerBlock;
 		for (let i = 0; i < s; i++) for (const d of x) d.cw.push(c.shift());
 		if (f.length > 1) {
 			const w = f[0].numBlocks,
@@ -839,28 +839,28 @@ class DC {
 	}
 	static x(m) {
 		const v = DC.v(m);
-		if (!v) return W.n('decodeMatrix v', v, m);
+		if (!v) return U.n('decodeMatrix v', v, m);
 		const f = DC.f(m);
-		if (!f) return W.n('decodeMatrix fI', f, m);
+		if (!f) return U.n('decodeMatrix fI', f, m);
 		const c = DC.c(m, v, f),
 			d = DC.b(c, v, f.e);
-		if (!d) return W.n('decodeMatrix d', d, m);
+		if (!d) return U.n('decodeMatrix d', d, m);
 		const t = d.reduce((a, b) => a + b.nD, 0),
-			r = W.u8ca(t);
+			r = U.u8ca(t);
 		let j = 0;
 		for (const b of d) {
 			const a = RS.dec(b.cw, b.cw.length - b.nD);
-			if (!a) return W.n('decodeMatrix cb c2:' + (b.cw.length - b.nD), a, m, b.cw);
+			if (!a) return U.n('decodeMatrix cb c2:' + (b.cw.length - b.nD), a, m, b.cw);
 			for (let i = 0; i < b.nD; i++) r[j++] = a[i];
 		}
 		try {
 			return DD.dec(r, v.versionNumber);
 		} catch (e) {
-			return W.n('decodeMatrix e', e);
+			return U.n('decodeMatrix e', e);
 		}
 	}
 	static dec(m) {
-		if (m == null) return W.n('decode mtx:' + m);
+		if (m == null) return U.n('decode mtx:' + m);
 		const r = DC.x(m);
 		if (r) return r;
 		for (let x = 0; x < m.w; x++)
@@ -994,7 +994,7 @@ class LC {
 				LC.s(LC.B(c, a, m, 5)) / 7 +
 				LC.s(LC.B(b, a, m, 5)) / 7) /
 			4;
-		if (e < 1) W.e('Invalid module size');
+		if (e < 1) U.e('Invalid module size');
 		const f = Math.round(LC.d(a, b) / e),
 			g = Math.round(LC.d(a, c) / e),
 			d = Math.floor((f + g) / 2) + 7;
@@ -1014,7 +1014,7 @@ class LC {
 			n = d < g ? 1 : -1,
 			t = [];
 		let r = M.floor(-h / 2),
-			p = W.T;
+			p = U.T;
 		for (let x = c, y = d; x !== f + k; x += k) {
 			const q = b ? y : x,
 				s = b ? x : y;
@@ -1154,23 +1154,23 @@ class LC {
 						}
 					};
 				for (let x = -1; x <= m.w; x++) f2(x);
-				W.cat(
+				U.cat(
 					P,
 					F.filter((q) => q.B.y !== y && q.B.y - q.T.y >= 2)
 				);
 				F = F.filter((q) => q.B.y === y);
-				W.cat(
+				U.cat(
 					Q,
 					A.filter((q) => q.B.y !== y)
 				);
 				A = A.filter((q) => q.B.y === y);
 			};
 		for (let y = 0; y <= m.h; y++) f1(y);
-		W.cat(
+		U.cat(
 			P,
 			F.filter((q) => q.B.y - q.T.y >= 2)
 		);
-		W.cat(Q, A);
+		U.cat(Q, A);
 		const G = P.filter((q) => q.B.y - q.T.y >= 2)
 			.map((q) => {
 				const x = (q.T.s + q.T.e + q.B.s + q.B.e) / 4,
@@ -1242,7 +1242,7 @@ class LC {
 			d = i.dim;
 			s = i.mS;
 		} catch (e) {
-			return W.n('findAlignmentPattern e:', e);
+			return U.n('findAlignmentPattern e:', e);
 		}
 		const R = {
 				x: r.x - l.x + b.x,
@@ -1272,7 +1272,7 @@ class LC {
 class JsQR {
 	static s(m) {
 		const L = LC.l(m);
-		if (!L) return W.n('scan A ls:' + L);
+		if (!L) return U.n('scan A ls:' + L);
 		for (const l of L) {
 			const e = EX.e(m, l),
 				d = DC.dec(e.m);
@@ -1294,7 +1294,7 @@ class JsQR {
 					},
 				};
 		}
-		return W.n(`scan B ls:${L}`);
+		return U.n(`scan B ls:${L}`);
 	}
 	static async exec(u8a, width, height, providedOptions = {}) {
 		await W.init();
@@ -1311,6 +1311,1227 @@ class JsQR {
 	}
 }
 export const jsQR = JsQR.exec;
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/**
+ * @fileoverview
+ * - Using the 'QRCode for Javascript library'
+ * - Fixed dataset of 'QRCode for Javascript library' for support full-spec.
+ * - this library has no dependencies.
+ *
+ * @author davidshimjs
+ * @see <a href="http://www.d-project.com/" target="_blank">http://www.d-project.com/</a>
+ * @see <a href="http://jeromeetienne.github.com/jquery-qrcode/" target="_blank">http://jeromeetienne.github.com/jquery-qrcode/</a>
+ */
+//---------------------------------------------------------------------
+// QRCode for JavaScript
+//
+// Copyright (c) 2009 Kazuhiko Arase
+//
+// URL: http://www.d-project.com/
+//
+// Licensed under the MIT license:
+//   http://www.opensource.org/licenses/mit-license.php
+//
+// The word "QR Code" is registered trademark of
+// DENSO WAVE INCORPORATED
+//   http://www.denso-wave.com/qrcode/faqpatent-e.html
+//
+//---------------------------------------------------------------------
+class QR8bitByte {
+	constructor(d) {
+		const z = this;
+		z.mode = QRMode.MODE_8BIT_BYTE;
+		z.data = d;
+		const pD = []; // Added to support UTF-8 Characters
+		for (let i = 0, l = d.length; i < l; i++) {
+			const b = [],
+				c = d.charCodeAt(i);
+			if (c > 0x10000) {
+				b[0] = 0xf0 | ((c & 0x1c0000) >>> 18);
+				b[1] = 0x80 | ((c & 0x3f000) >>> 12);
+				b[2] = 0x80 | ((c & 0xfc0) >>> 6);
+				b[3] = 0x80 | (c & 0x3f);
+			} else if (c > 0x800) {
+				b[0] = 0xe0 | ((c & 0xf000) >>> 12);
+				b[1] = 0x80 | ((c & 0xfc0) >>> 6);
+				b[2] = 0x80 | (c & 0x3f);
+			} else if (c > 0x80) {
+				b[0] = 0xc0 | ((c & 0x7c0) >>> 6);
+				b[1] = 0x80 | (c & 0x3f);
+			} else {
+				b[0] = c;
+			}
+			pD.push(b);
+		}
+		z.pD = [].concat(pD);
+		if (z.pD.length !== d.length) {
+			z.pD.unshift(191); // ADD BOM
+			z.pD.unshift(187);
+			z.pD.unshift(239);
+		}
+	}
+	getLength() {
+		return this.pD.length;
+	}
+	write(buf) {
+		for (let i = 0, l = this.pD.length; i < l; i++) buf.put(this.pD[i], 8);
+	}
+}
+class QRCodeModel {
+	const;
+	constructor(tN, eCL) {
+		const z = this;
+		z.typeNumber = tN;
+		z.errorCorrectLevel = eCL;
+		z.modules = null;
+		z.moduleCount = 0;
+		z.dataCache = null;
+		z.dataList = [];
+	}
+	addData(d) {
+		this.dataList.push(new QR8bitByte(d));
+		this.dataCache = null;
+	}
+	isDark(r, c) {
+		if (r < 0 || this.moduleCount <= r || c < 0 || this.moduleCount <= c) U.e(r + ',' + c);
+		return this.modules[r][c];
+	}
+	getModuleCount() {
+		return this.moduleCount;
+	}
+	make() {
+		this.makeImpl(false, this.getBestMaskPattern());
+	}
+	makeImpl(test, mP) {
+		const z = this,
+			n = z.typeNumber * 4 + 17,
+			nOM7 = n - 7,
+			m = new Array(n);
+		z.moduleCount = n;
+		z.modules = m;
+		for (let rI = 0; rI < n; rI++) {
+			const r = new Array(n);
+			m[rI] = r;
+			for (let cI = 0; cI < n; cI++) r[cI] = null;
+		}
+		z.setupPositionProbePattern(0, 0);
+		z.setupPositionProbePattern(nOM7, 0);
+		z.setupPositionProbePattern(0, nOM7);
+		z.setupPositionAdjustPattern();
+		z.setupTimingPattern();
+		z.setupTypeInfo(test, mP);
+		if (z.typeNumber >= 7) z.setupTypeNumber(test);
+		if (z.dataCache == null) z.dataCache = QRCodeModel.createData(z.typeNumber, z.errorCorrectLevel, z.dataList);
+		z.mapData(z.dataCache, mP);
+	}
+	setupPositionProbePattern(row, col) {
+		const n = this.moduleCount,
+			m = this.modules;
+		for (let r = -1; r <= 7; r++) {
+			const rR = row + r;
+			if (rR <= -1 || n <= rR) continue;
+			for (let c = -1; c <= 7; c++) {
+				const cC = col + c;
+				if (cC <= -1 || n <= cC) continue;
+				m[rR][cC] =
+					!!(0 <= r && r <= 6 && (c === 0 || c === 6)) ||
+					(0 <= c && c <= 6 && (r === 0 || r === 6)) ||
+					(2 <= r && r <= 4 && 2 <= c && c <= 4);
+			}
+		}
+	}
+	getBestMaskPattern() {
+		let minLP = 0,
+			p = 0;
+		for (let i = 0; i < 8; i++) {
+			this.makeImpl(true, i);
+			const lP = QRUtil.getLostPoint(this);
+			if (i === 0 || minLP > lP) {
+				minLP = lP;
+				p = i;
+			}
+		}
+		return p;
+	}
+	createMovieClip(target_mc, instance_name, depth) {
+		const qr_mc = target_mc.createEmptyMovieClip(instance_name, depth),
+			cs = 1;
+		this.make();
+		const m = this.modules;
+		for (let rI = 0, rl = m.length; rI < rl; rI++) {
+			const y = rI * cs,
+				row = m[rI];
+			for (let cI = 0, cl = row.length; cI < cl; cI++) {
+				const x = cI * cs,
+					isDark = row[cI];
+				if (isDark) {
+					qr_mc.beginFill(0, 100);
+					qr_mc.moveTo(x, y);
+					qr_mc.lineTo(x + cs, y);
+					qr_mc.lineTo(x + cs, y + cs);
+					qr_mc.lineTo(x, y + cs);
+					qr_mc.endFill();
+				}
+			}
+		}
+		return qr_mc;
+	}
+	setupTimingPattern() {
+		const nO = this.moduleCount - 8,
+			m = this.modules;
+		for (let i = 8; i < nO; i++) {
+			const mod = i % 2 === 0,
+				r = m[i][6],
+				c = m[6][i];
+			m[i][6] = r != null ? r : mod;
+			m[6][i] = c != null ? c : mod;
+		}
+	}
+	setupPositionAdjustPattern() {
+		const pos = QRUtil.getPatternPosition(this.typeNumber),
+			pl = pos.length,
+			m = this.modules;
+		for (let i = 0; i < pl; i++)
+			for (let j = 0; j < pl; j++) {
+				const rI = pos[i],
+					cI = pos[j];
+				if (m[rI][cI] != null) continue;
+				for (let r = -2; r <= 2; r++) {
+					const row = m[rI + r];
+					for (let c = -2; c <= 2; c++)
+						row[cI + c] = !!(r === -2 || r === 2 || c === -2 || c === 2 || (r === 0 && c === 0));
+				}
+			}
+	}
+	setupTypeNumber(test) {
+		const bits = QRUtil.getBCHTypeNumber(this.typeNumber),
+			n = this.moduleCount,
+			m = this.modules;
+		for (let i = 0; i < 18; i++) {
+			const mod = !test && ((bits >> i) & 1) === 1,
+				a = Math.floor(i / 3),
+				b = (i % 3) + n - 8 - 3;
+			m[a][b] = mod;
+			m[b][a] = mod;
+		}
+	}
+	setupTypeInfo(test, mP) {
+		const d = (this.errorCorrectLevel << 3) | mP,
+			bits = QRUtil.getBCHTypeInfo(d),
+			n = this.moduleCount,
+			m = this.modules;
+		for (let i = 0; i < 15; i++) {
+			const mod = !test && ((bits >> i) & 1) === 1;
+			if (i < 6) m[i][8] = mod;
+			else if (i < 8) m[i + 1][8] = mod;
+			else m[n - 15 + i][8] = mod;
+			if (i < 8) m[8][n - i - 1] = mod;
+			else if (i < 9) m[8][15 - i - 1 + 1] = mod;
+			else m[8][15 - i - 1] = mod;
+		}
+		m[n - 8][8] = !test;
+	}
+	mapData(d, mP) {
+		const n = this.moduleCount,
+			m = this.modules,
+			dL = d.length;
+		let inc = -1,
+			rI = n - 1,
+			bitI = 7,
+			byteI = 0;
+		for (let cI = n - 1; cI > 0; cI -= 2) {
+			if (cI === 6) cI--;
+			while (true) {
+				const r = m[rI];
+				for (let y = 0; y < 2; y++) {
+					const cO = cI - y,
+						c = r[cO];
+					if (c !== null) continue;
+					let isDark = byteI < dL ? ((d[byteI] >>> bitI) & 1) === 1 : false;
+					const isMask = QRUtil.getMask(mP, rI, cO);
+					if (isMask) isDark = !isDark;
+					r[cO] = isDark;
+					bitI--;
+					if (bitI === -1) {
+						byteI++;
+						bitI = 7;
+					}
+				}
+				rI += inc;
+				if (rI < 0 || n <= rI) {
+					rI -= inc;
+					inc = -inc;
+					break;
+				}
+			}
+		}
+	}
+	static createData(tN, eCL, dL) {
+		const PAD0 = 0xec,
+			PAD1 = 0x11,
+			rsBs = QRRSBlock.getRSBlocks(tN, eCL),
+			b = new QRBitBuffer();
+		for (const d of dL) {
+			b.put(d.mode, 4);
+			b.put(d.getLength(), QRUtil.getLengthInBits(d.mode, tN));
+			d.write(b);
+		}
+		let tCC = 0;
+		for (const rsB of rsBs) tCC += rsB.dataCount;
+		const tDBC = tCC * 8,
+			bitL = b.getLengthInBits();
+		if (bitL > tDBC) U.e('code length overflow. (' + bitL + '>' + tDBC + ')');
+		if (bitL + 4 <= tDBC) b.put(0, 4);
+		while (b.getLengthInBits() % 8 !== 0) b.putBit(false);
+		while (true) {
+			if (b.getLengthInBits() >= tDBC) break;
+			b.put(PAD0, 8);
+			if (b.getLengthInBits() >= tDBC) break;
+			b.put(PAD1, 8);
+		}
+		return QRCodeModel.createBytes(b, rsBs);
+	}
+	static createBytes(buf, rsBs) {
+		let o = 0,
+			maxDC = 0,
+			maxEC = 0;
+		const bitB = buf.buffer,
+			len = rsBs.length,
+			dc = new Array(len),
+			ec = new Array(len);
+		let tCC = 0;
+		for (let r = 0; r < len; r++) {
+			const rsB = rsBs[r],
+				dC = rsB.dataCount,
+				eC = rsB.totalCount - dC,
+				dDR = new Array(dC);
+			maxDC = Math.max(maxDC, dC);
+			maxEC = Math.max(maxEC, eC);
+			for (let i = 0; i < dC; i++) dDR[i] = 0xff & bitB[i + o];
+			dc[r] = dDR;
+			o += dC;
+			const rsPoly = QRUtil.getErrorCorrectPolynomial(eC),
+				ecLen = rsPoly.getLength() - 1,
+				rawPoly = new QRPolynomial(dDR, ecLen),
+				modPoly = rawPoly.mod(rsPoly),
+				modLen = modPoly.getLength(),
+				offsetLen = modLen - ecLen,
+				eDR = new Array(ecLen);
+			for (let i = 0; i < ecLen; i++) {
+				const modI = i + offsetLen;
+				eDR[i] = modI >= 0 ? modPoly.get(modI) : 0;
+			}
+			ec[r] = eDR;
+			tCC += rsB.totalCount;
+		}
+		const d = new Array(tCC);
+		let idx = 0;
+		for (let i = 0; i < maxDC; i++)
+			for (let r = 0; r < len; r++) {
+				const dDR = dc[r];
+				if (i < dDR.length) d[idx++] = dDR[i];
+			}
+		for (let i = 0; i < maxEC; i++)
+			for (let r = 0; r < len; r++) {
+				const eDR = ec[r];
+				if (i < eDR.length) d[idx++] = eDR[i];
+			}
+		return d;
+	}
+}
+const QRMode = { MODE_NUMBER: 1 << 0, MODE_ALPHA_NUM: 1 << 1, MODE_8BIT_BYTE: 1 << 2, MODE_KANJI: 1 << 3 };
+const QRErrorCorrectLevel = { L: 1, M: 0, Q: 3, H: 2 };
+const QRMaskPattern = {
+	PATTERN000: 0,
+	PATTERN001: 1,
+	PATTERN010: 2,
+	PATTERN011: 3,
+	PATTERN100: 4,
+	PATTERN101: 5,
+	PATTERN110: 6,
+	PATTERN111: 7,
+};
+const QRUtil = {
+	PATTERN_POSITION_TABLE: [
+		[],
+		[6, 18],
+		[6, 22],
+		[6, 26],
+		[6, 30],
+		[6, 34],
+		[6, 22, 38],
+		[6, 24, 42],
+		[6, 26, 46],
+		[6, 28, 50],
+		[6, 30, 54],
+		[6, 32, 58],
+		[6, 34, 62],
+		[6, 26, 46, 66],
+		[6, 26, 48, 70],
+		[6, 26, 50, 74],
+		[6, 30, 54, 78],
+		[6, 30, 56, 82],
+		[6, 30, 58, 86],
+		[6, 34, 62, 90],
+		[6, 28, 50, 72, 94],
+		[6, 26, 50, 74, 98],
+		[6, 30, 54, 78, 102],
+		[6, 28, 54, 80, 106],
+		[6, 32, 58, 84, 110],
+		[6, 30, 58, 86, 114],
+		[6, 34, 62, 90, 118],
+		[6, 26, 50, 74, 98, 122],
+		[6, 30, 54, 78, 102, 126],
+		[6, 26, 52, 78, 104, 130],
+		[6, 30, 56, 82, 108, 134],
+		[6, 34, 60, 86, 112, 138],
+		[6, 30, 58, 86, 114, 142],
+		[6, 34, 62, 90, 118, 146],
+		[6, 30, 54, 78, 102, 126, 150],
+		[6, 24, 50, 76, 102, 128, 154],
+		[6, 28, 54, 80, 106, 132, 158],
+		[6, 32, 58, 84, 110, 136, 162],
+		[6, 26, 54, 82, 110, 138, 166],
+		[6, 30, 58, 86, 114, 142, 170],
+	],
+	G15: (1 << 10) | (1 << 8) | (1 << 5) | (1 << 4) | (1 << 2) | (1 << 1) | (1 << 0),
+	G18: (1 << 12) | (1 << 11) | (1 << 10) | (1 << 9) | (1 << 8) | (1 << 5) | (1 << 2) | (1 << 0),
+	G15_MASK: (1 << 14) | (1 << 12) | (1 << 10) | (1 << 4) | (1 << 1),
+	getBCHTypeInfo(dt) {
+		let d = dt << 10;
+		const Q = QRUtil;
+		while (Q.getBCHDigit(d) - Q.getBCHDigit(Q.G15) >= 0) d ^= Q.G15 << (Q.getBCHDigit(d) - Q.getBCHDigit(Q.G15));
+		return ((dt << 10) | d) ^ Q.G15_MASK;
+	},
+	getBCHTypeNumber(dt) {
+		let d = dt << 12;
+		const Q = QRUtil;
+		while (Q.getBCHDigit(d) - Q.getBCHDigit(Q.G18) >= 0) d ^= Q.G18 << (Q.getBCHDigit(d) - Q.getBCHDigit(Q.G18));
+		return (dt << 12) | d;
+	},
+	getBCHDigit(dt) {
+		let digit = 0;
+		while (dt !== 0) {
+			digit++;
+			dt >>>= 1;
+		}
+		return digit;
+	},
+	getPatternPosition(tN) {
+		return QRUtil.PATTERN_POSITION_TABLE[tN - 1];
+	},
+	getMask(mP, i, j) {
+		const Q = QRMaskPattern;
+		switch (mP) {
+			case Q.PATTERN000:
+				return (i + j) % 2 === 0;
+			case Q.PATTERN001:
+				return i % 2 === 0;
+			case Q.PATTERN010:
+				return j % 3 === 0;
+			case Q.PATTERN011:
+				return (i + j) % 3 === 0;
+			case Q.PATTERN100:
+				return (Math.floor(i / 2) + Math.floor(j / 3)) % 2 === 0;
+			case Q.PATTERN101:
+				return ((i * j) % 2) + ((i * j) % 3) === 0;
+			case Q.PATTERN110:
+				return (((i * j) % 2) + ((i * j) % 3)) % 2 === 0;
+			case Q.PATTERN111:
+				return (((i * j) % 3) + ((i + j) % 2)) % 2 === 0;
+			default:
+				U.e('bad maskPattern:' + mP);
+		}
+	},
+	getErrorCorrectPolynomial(eCL) {
+		let a = new QRPolynomial([1], 0);
+		for (let i = 0; i < eCL; i++) a = a.multiply(new QRPolynomial([1, QRMath.gexp(i)], 0));
+		return a;
+	},
+	getLengthInBits(m, t) {
+		const Q = QRMode;
+		if (1 <= t && t < 10) {
+			switch (m) {
+				case Q.MODE_NUMBER:
+					return 10;
+				case Q.MODE_ALPHA_NUM:
+					return 9;
+				case Q.MODE_8BIT_BYTE:
+					return 8;
+				case Q.MODE_KANJI:
+					return 8;
+				default:
+					U.e('mode:' + m);
+			}
+		} else if (t < 27) {
+			switch (m) {
+				case Q.MODE_NUMBER:
+					return 12;
+				case Q.MODE_ALPHA_NUM:
+					return 11;
+				case Q.MODE_8BIT_BYTE:
+					return 16;
+				case Q.MODE_KANJI:
+					return 10;
+				default:
+					U.e('mode:' + m);
+			}
+		} else if (t < 41) {
+			switch (m) {
+				case Q.MODE_NUMBER:
+					return 14;
+				case Q.MODE_ALPHA_NUM:
+					return 13;
+				case Q.MODE_8BIT_BYTE:
+					return 16;
+				case Q.MODE_KANJI:
+					return 12;
+				default:
+					U.e('mode:' + m);
+			}
+		} else U.e('type:' + t);
+	},
+	getLostPoint(qrC) {
+		const n = qrC.getModuleCount();
+		let lP = 0;
+		for (let row = 0; row < n; row++)
+			for (let col = 0; col < n; col++) {
+				let sC = 0;
+				const isDark = qrC.isDark(row, col);
+				for (let r = -1; r <= 1; r++) {
+					const rR = row + r;
+					if (rR < 0 || n <= rR) continue;
+					for (let c = -1; c <= 1; c++) {
+						const cC = col + c;
+						if (cC < 0 || n <= cC) continue;
+						if (r === 0 && c === 0) continue;
+						if (isDark === qrC.isDark(rR, cC)) sC++;
+					}
+				}
+				if (sC > 5) lP += 3 + sC - 5;
+			}
+		for (let r = 0; r < n - 1; r++) {
+			const r1 = r + 1;
+			for (let c = 0; c < n - 1; c++) {
+				let cnt = 0;
+				const c1 = c + 1;
+				if (qrC.isDark(r, c)) cnt++;
+				if (qrC.isDark(r1, c)) cnt++;
+				if (qrC.isDark(r, c1)) cnt++;
+				if (qrC.isDark(r1, c1)) cnt++;
+				if (cnt === 0 || cnt === 4) lP += 3;
+			}
+		}
+		for (let r = 0; r < n; r++)
+			for (let c = 0; c < n - 6; c++)
+				if (
+					qrC.isDark(r, c) &&
+					!qrC.isDark(r, c + 1) &&
+					qrC.isDark(r, c + 2) &&
+					qrC.isDark(r, c + 3) &&
+					qrC.isDark(r, c + 4) &&
+					!qrC.isDark(r, c + 5) &&
+					qrC.isDark(r, c + 6)
+				)
+					lP += 40;
+		for (let c = 0; c < n; c++)
+			for (let r = 0; r < n - 6; r++)
+				if (
+					qrC.isDark(r, c) &&
+					!qrC.isDark(r + 1, c) &&
+					qrC.isDark(r + 2, c) &&
+					qrC.isDark(r + 3, c) &&
+					qrC.isDark(r + 4, c) &&
+					!qrC.isDark(r + 5, c) &&
+					qrC.isDark(r + 6, c)
+				)
+					lP += 40;
+		let dC = 0;
+		for (let col = 0; col < n; col++) for (let row = 0; row < n; row++) if (qrC.isDark(row, col)) dC++;
+		const ratio = Math.abs((100 * dC) / n / n - 50) / 5;
+		lP += ratio * 10;
+		return lP;
+	},
+};
+class QRMath {
+	static glog(n) {
+		if (n < 1) U.e('glog(' + n + ')');
+		return QRMath.LOG_TABLE[n];
+	}
+	static gexp(n) {
+		while (n < 0) n += 255;
+		while (n >= 256) n -= 255;
+		return QRMath.EXP_TABLE[n];
+	}
+	static init() {
+		const expT = new Array(256),
+			logT = new Array(256);
+		for (let i = 0; i < 8; i++) expT[i] = 1 << i;
+		for (let i = 8; i < 256; i++) expT[i] = expT[i - 4] ^ expT[i - 5] ^ expT[i - 6] ^ expT[i - 8];
+		for (let i = 0; i < 255; i++) logT[expT[i]] = i;
+		QRMath.EXP_TABLE = expT;
+		QRMath.LOG_TABLE = logT;
+	}
+}
+QRMath.init();
+class QRPolynomial {
+	constructor(n, s) {
+		const nL = n.length;
+		if (nL === undefined) U.e(nL + '/' + s);
+		let o = 0;
+		while (o < nL && n[o] === 0) o++;
+		const nLO = nL - o,
+			ns = new Array(nLO + s);
+		for (let i = 0; i < nLO; i++) ns[i] = n[i + o];
+		this.num = ns;
+	}
+	get(i) {
+		return this.num[i];
+	}
+	getLength() {
+		return this.num.length;
+	}
+	multiply(e) {
+		const n = this.num,
+			nL = n.length,
+			eN = e.num,
+			eL = eN.length,
+			nR = new Array(nL + eL - 1);
+		for (let i = 0; i < nL; i++) {
+			const nG = QRMath.glog(n[i]);
+			for (let j = 0; j < eL; j++) {
+				const eNG = QRMath.glog(eN[j]);
+				nR[i + j] ^= QRMath.gexp(nG + eNG);
+			}
+		}
+		return new QRPolynomial(nR, 0);
+	}
+	mod(e) {
+		const n = this.num,
+			nL = n.length,
+			eN = e.num,
+			eL = eN.length,
+			Q = QRMath;
+		if (nL - eL < 0) return this;
+		const ratio = Q.glog(n[0]) - Q.glog(eN[0]),
+			nR = new Array(nL);
+		for (let i = 0; i < nL; i++) nR[i] = n[i];
+		for (let i = 0; i < eL; i++) nR[i] ^= Q.gexp(Q.glog(eN[i]) + ratio);
+		return new QRPolynomial(nR, 0).mod(e);
+	}
+}
+class QRRSBlock {
+	constructor(tC, dC) {
+		this.totalCount = tC;
+		this.dataCount = dC;
+	}
+	static getRSBlocks(tN, eCL) {
+		const rsB = QRRSBlock.getRsBlockTable(tN, eCL);
+		if (rsB === undefined) U.e('bad rs block @ typeNumber:' + tN + '/errorCorrectLevel:' + eCL);
+		const l = rsB.length / 3,
+			rsBs = [];
+		for (let k = 0; k < l; k++) {
+			const i = k * 3,
+				c = rsB[i + 0],
+				tC = rsB[i + 1],
+				dC = rsB[i + 2];
+			for (let j = 0; j < c; j++) rsBs.push(new QRRSBlock(tC, dC));
+		}
+		return rsBs;
+	}
+	static getRsBlockTable(tN, eCL) {
+		const bECL = (tN - 1) * 4;
+		const Q = QRErrorCorrectLevel;
+		const T = QRRSBlock.RS_BLOCK_TABLE;
+		switch (eCL) {
+			case Q.L:
+				return T[bECL + 0];
+			case Q.M:
+				return T[bECL + 1];
+			case Q.Q:
+				return T[bECL + 2];
+			case Q.H:
+				return T[bECL + 3];
+			default:
+				return undefined;
+		}
+	}
+}
+QRRSBlock.RS_BLOCK_TABLE = [
+	[1, 26, 19],
+	[1, 26, 16],
+	[1, 26, 13],
+	[1, 26, 9],
+	[1, 44, 34],
+	[1, 44, 28],
+	[1, 44, 22],
+	[1, 44, 16],
+	[1, 70, 55],
+	[1, 70, 44],
+	[2, 35, 17],
+	[2, 35, 13],
+	[1, 100, 80],
+	[2, 50, 32],
+	[2, 50, 24],
+	[4, 25, 9],
+	[1, 134, 108],
+	[2, 67, 43],
+	[2, 33, 15, 2, 34, 16],
+	[2, 33, 11, 2, 34, 12],
+	[2, 86, 68],
+	[4, 43, 27],
+	[4, 43, 19],
+	[4, 43, 15],
+	[2, 98, 78],
+	[4, 49, 31],
+	[2, 32, 14, 4, 33, 15],
+	[4, 39, 13, 1, 40, 14],
+	[2, 121, 97],
+	[2, 60, 38, 2, 61, 39],
+	[4, 40, 18, 2, 41, 19],
+	[4, 40, 14, 2, 41, 15],
+	[2, 146, 116],
+	[3, 58, 36, 2, 59, 37],
+	[4, 36, 16, 4, 37, 17],
+	[4, 36, 12, 4, 37, 13],
+	[2, 86, 68, 2, 87, 69],
+	[4, 69, 43, 1, 70, 44],
+	[6, 43, 19, 2, 44, 20],
+	[6, 43, 15, 2, 44, 16],
+	[4, 101, 81],
+	[1, 80, 50, 4, 81, 51],
+	[4, 50, 22, 4, 51, 23],
+	[3, 36, 12, 8, 37, 13],
+	[2, 116, 92, 2, 117, 93],
+	[6, 58, 36, 2, 59, 37],
+	[4, 46, 20, 6, 47, 21],
+	[7, 42, 14, 4, 43, 15],
+	[4, 133, 107],
+	[8, 59, 37, 1, 60, 38],
+	[8, 44, 20, 4, 45, 21],
+	[12, 33, 11, 4, 34, 12],
+	[3, 145, 115, 1, 146, 116],
+	[4, 64, 40, 5, 65, 41],
+	[11, 36, 16, 5, 37, 17],
+	[11, 36, 12, 5, 37, 13],
+	[5, 109, 87, 1, 110, 88],
+	[5, 65, 41, 5, 66, 42],
+	[5, 54, 24, 7, 55, 25],
+	[11, 36, 12],
+	[5, 122, 98, 1, 123, 99],
+	[7, 73, 45, 3, 74, 46],
+	[15, 43, 19, 2, 44, 20],
+	[3, 45, 15, 13, 46, 16],
+	[1, 135, 107, 5, 136, 108],
+	[10, 74, 46, 1, 75, 47],
+	[1, 50, 22, 15, 51, 23],
+	[2, 42, 14, 17, 43, 15],
+	[5, 150, 120, 1, 151, 121],
+	[9, 69, 43, 4, 70, 44],
+	[17, 50, 22, 1, 51, 23],
+	[2, 42, 14, 19, 43, 15],
+	[3, 141, 113, 4, 142, 114],
+	[3, 70, 44, 11, 71, 45],
+	[17, 47, 21, 4, 48, 22],
+	[9, 39, 13, 16, 40, 14],
+	[3, 135, 107, 5, 136, 108],
+	[3, 67, 41, 13, 68, 42],
+	[15, 54, 24, 5, 55, 25],
+	[15, 43, 15, 10, 44, 16],
+	[4, 144, 116, 4, 145, 117],
+	[17, 68, 42],
+	[17, 50, 22, 6, 51, 23],
+	[19, 46, 16, 6, 47, 17],
+	[2, 139, 111, 7, 140, 112],
+	[17, 74, 46],
+	[7, 54, 24, 16, 55, 25],
+	[34, 37, 13],
+	[4, 151, 121, 5, 152, 122],
+	[4, 75, 47, 14, 76, 48],
+	[11, 54, 24, 14, 55, 25],
+	[16, 45, 15, 14, 46, 16],
+	[6, 147, 117, 4, 148, 118],
+	[6, 73, 45, 14, 74, 46],
+	[11, 54, 24, 16, 55, 25],
+	[30, 46, 16, 2, 47, 17],
+	[8, 132, 106, 4, 133, 107],
+	[8, 75, 47, 13, 76, 48],
+	[7, 54, 24, 22, 55, 25],
+	[22, 45, 15, 13, 46, 16],
+	[10, 142, 114, 2, 143, 115],
+	[19, 74, 46, 4, 75, 47],
+	[28, 50, 22, 6, 51, 23],
+	[33, 46, 16, 4, 47, 17],
+	[8, 152, 122, 4, 153, 123],
+	[22, 73, 45, 3, 74, 46],
+	[8, 53, 23, 26, 54, 24],
+	[12, 45, 15, 28, 46, 16],
+	[3, 147, 117, 10, 148, 118],
+	[3, 73, 45, 23, 74, 46],
+	[4, 54, 24, 31, 55, 25],
+	[11, 45, 15, 31, 46, 16],
+	[7, 146, 116, 7, 147, 117],
+	[21, 73, 45, 7, 74, 46],
+	[1, 53, 23, 37, 54, 24],
+	[19, 45, 15, 26, 46, 16],
+	[5, 145, 115, 10, 146, 116],
+	[19, 75, 47, 10, 76, 48],
+	[15, 54, 24, 25, 55, 25],
+	[23, 45, 15, 25, 46, 16],
+	[13, 145, 115, 3, 146, 116],
+	[2, 74, 46, 29, 75, 47],
+	[42, 54, 24, 1, 55, 25],
+	[23, 45, 15, 28, 46, 16],
+	[17, 145, 115],
+	[10, 74, 46, 23, 75, 47],
+	[10, 54, 24, 35, 55, 25],
+	[19, 45, 15, 35, 46, 16],
+	[17, 145, 115, 1, 146, 116],
+	[14, 74, 46, 21, 75, 47],
+	[29, 54, 24, 19, 55, 25],
+	[11, 45, 15, 46, 46, 16],
+	[13, 145, 115, 6, 146, 116],
+	[14, 74, 46, 23, 75, 47],
+	[44, 54, 24, 7, 55, 25],
+	[59, 46, 16, 1, 47, 17],
+	[12, 151, 121, 7, 152, 122],
+	[12, 75, 47, 26, 76, 48],
+	[39, 54, 24, 14, 55, 25],
+	[22, 45, 15, 41, 46, 16],
+	[6, 151, 121, 14, 152, 122],
+	[6, 75, 47, 34, 76, 48],
+	[46, 54, 24, 10, 55, 25],
+	[2, 45, 15, 64, 46, 16],
+	[17, 152, 122, 4, 153, 123],
+	[29, 74, 46, 14, 75, 47],
+	[49, 54, 24, 10, 55, 25],
+	[24, 45, 15, 46, 46, 16],
+	[4, 152, 122, 18, 153, 123],
+	[13, 74, 46, 32, 75, 47],
+	[48, 54, 24, 14, 55, 25],
+	[42, 45, 15, 32, 46, 16],
+	[20, 147, 117, 4, 148, 118],
+	[40, 75, 47, 7, 76, 48],
+	[43, 54, 24, 22, 55, 25],
+	[10, 45, 15, 67, 46, 16],
+	[19, 148, 118, 6, 149, 119],
+	[18, 75, 47, 31, 76, 48],
+	[34, 54, 24, 34, 55, 25],
+	[20, 45, 15, 61, 46, 16],
+];
+const QRCodeLimitLength = [
+	[17, 14, 11, 7],
+	[32, 26, 20, 14],
+	[53, 42, 32, 24],
+	[78, 62, 46, 34],
+	[106, 84, 60, 44],
+	[134, 106, 74, 58],
+	[154, 122, 86, 64],
+	[192, 152, 108, 84],
+	[230, 180, 130, 98],
+	[271, 213, 151, 119],
+	[321, 251, 177, 137],
+	[367, 287, 203, 155],
+	[425, 331, 241, 177],
+	[458, 362, 258, 194],
+	[520, 412, 292, 220],
+	[586, 450, 322, 250],
+	[644, 504, 364, 280],
+	[718, 560, 394, 310],
+	[792, 624, 442, 338],
+	[858, 666, 482, 382],
+	[929, 711, 509, 403],
+	[1003, 779, 565, 439],
+	[1091, 857, 611, 461],
+	[1171, 911, 661, 511],
+	[1273, 997, 715, 535],
+	[1367, 1059, 751, 593],
+	[1465, 1125, 805, 625],
+	[1528, 1190, 868, 658],
+	[1628, 1264, 908, 698],
+	[1732, 1370, 982, 742],
+	[1840, 1452, 1030, 790],
+	[1952, 1538, 1112, 842],
+	[2068, 1628, 1168, 898],
+	[2188, 1722, 1228, 958],
+	[2303, 1809, 1283, 983],
+	[2431, 1911, 1351, 1051],
+	[2563, 1989, 1423, 1093],
+	[2699, 2099, 1499, 1139],
+	[2809, 2213, 1579, 1219],
+	[2953, 2331, 1663, 1273],
+];
+class QRBitBuffer {
+	constructor() {
+		this.buffer = [];
+		this.length = 0;
+	}
+	get(i) {
+		const bufI = Math.floor(i / 8);
+		return ((this.buffer[bufI] >>> (7 - (i % 8))) & 1) === 1;
+	}
+	put(n, l) {
+		for (let i = 0; i < l; i++) this.putBit(((n >>> (l - i - 1)) & 1) === 1);
+	}
+	getLengthInBits() {
+		return this.length;
+	}
+	putBit(bit) {
+		const bufI = Math.floor(this.length / 8);
+		if (this.buffer.length <= bufI) this.buffer.push(0);
+		if (bit) this.buffer[bufI] |= 0x80 >>> this.length % 8;
+		this.length++;
+	}
+}
+class SvgDrawer {
+	constructor(elm, opt) {
+		this.elm = elm;
+		this.opt = opt;
+	}
+	draw(qrCD) {
+		const z = this,
+			opt = z.opt,
+			elm = z.elm,
+			nC = qrCD.getModuleCount();
+		elm.style.width = opt.width + 'px';
+		elm.style.height = opt.height + 'px';
+		z.clear();
+		const attrs = {
+			viewBox: '0 0 ' + nC + ' ' + nC,
+			width: '100%',
+			height: '100%',
+			fill: opt.colorLight,
+		};
+		const svg = z.makeSVG('svg', attrs);
+		svg.setAttributeNS('http://www.w3.org/2000/xmlns/', 'xmlns:xlink', 'http://www.w3.org/1999/xlink');
+		elm.appendChild(svg);
+		svg.appendChild(z.makeSVG('rect', { fill: opt.colorLight, width: '100%', height: '100%' }));
+		svg.appendChild(z.makeSVG('rect', { fill: opt.colorDark, width: '1', height: '1', id: 'template' }));
+		for (let rI = 0; rI < nC; rI++)
+			for (let cI = 0; cI < nC; cI++)
+				if (qrCD.isDark(rI, cI)) {
+					const c = z.makeSVG('use', { x: cI + '', y: rI + '' });
+					c.setAttributeNS('http://www.w3.org/1999/xlink', 'href', '#template');
+					svg.appendChild(c);
+				}
+	}
+	makeSVG(t, a) {
+		const e = document.createElementNS('http://www.w3.org/2000/svg', t);
+		for (const [k, v] of Object.entries(a)) if (v) e.setAttribute(k, v);
+		return e;
+	}
+	clear() {
+		while (this.elm.hasChildNodes()) this.elm.removeChild(this.elm.lastChild);
+	}
+}
+class HtmlDrawer {
+	constructor(elm, opt) {
+		this.elm = elm;
+		this.opt = opt;
+	}
+	/**
+	 * Draw the QRCode
+	 *
+	 * @param {QRCode} qrCD
+	 */
+	draw(qrCD) {
+		const opt = this.opt,
+			elm = this.elm,
+			nC = qrCD.getModuleCount(),
+			nW = Math.floor(opt.width / nC),
+			nH = Math.floor(opt.height / nC),
+			tE = document.createElement('table'),
+			s = tE.style;
+		s.borderWidth = 0;
+		s.borderCollapse = 'collapse';
+		for (let r = 0; r < nC; r++) {
+			const trE = document.createElement('tr');
+			for (let c = 0; c < nC; c++) {
+				const color = qrCD.isDark(r, c) ? opt.colorDark : opt.colorLight,
+					tE = document.createElement('td');
+				s.borderWidth = 0;
+				s.borderCollapse = 'collapse';
+				s.padding = 0;
+				s.margin = 0;
+				s.width = nW;
+				s.height = nH;
+				s.backgroundColor = color;
+				trE.append(tE);
+			}
+			tE.append(trE);
+		}
+		elm.append(tE);
+		const elT = elm.childNodes[0], // Fix the margin values as real size.
+			nLeftMT = (opt.width - elT.offsetWidth) / 2,
+			nTopMT = (opt.height - elT.offsetHeight) / 2;
+		if (nLeftMT > 0 && nTopMT > 0) elT.style.margin = nTopMT + 'px ' + nLeftMT + 'px';
+	}
+	/**
+	 * Clear the QRCode
+	 */
+	clear() {
+		while (this.elm.hasChildNodes()) this.elm.removeChild(this.elm.lastChild);
+	}
+}
+class CanvasDrawer {
+	/**
+	 * Drawing QRCode by using canvas
+	 *
+	 * @constructor
+	 * @param {HTMLElement} elm
+	 * @param {Object} opt QRCode Options
+	 */
+	constructor(elm, opt) {
+		const z = this;
+		z.opt = opt;
+		z.cElm = document.createElement('canvas');
+		z.cElm.width = opt.width;
+		z.cElm.height = opt.height;
+		z.cElm.style.position = 'absolute';
+		z.cElm.style.top = opt.height * -1;
+		elm.appendChild(z.cElm);
+		z.elm = elm;
+		z.ctx = z.cElm.getContext('2d');
+		z.iElm = document.createElement('img');
+		z.iElm.alt = 'Scan me!';
+		z.iElm.style.display = 'none';
+		z.elm.appendChild(this.iElm);
+	}
+	/**
+	 * Draw the QRCode
+	 *
+	 * @param {QRCode} qrCD
+	 */
+	draw(qrCD) {
+		const z = this,
+			opt = z.opt;
+		z.cElm.width = opt.width;
+		z.cElm.height = opt.height;
+		const imgE = z.iElm,
+			x = z.ctx,
+			nC = qrCD.getModuleCount(),
+			nW = opt.width / nC,
+			nH = opt.height / nC,
+			nHW = Math.round(nW),
+			nRH = Math.round(nH);
+		imgE.style.display = 'none';
+		z.clear();
+		for (let rI = 0; rI < nC; rI++) {
+			for (let cI = 0; cI < nC; cI++) {
+				const isDark = qrCD.isDark(rI, cI),
+					nL = cI * nW,
+					nT = rI * nH;
+				x.strokeStyle = isDark ? opt.colorDark : opt.colorLight;
+				x.lineWidth = 1;
+				x.fillStyle = isDark ? opt.colorDark : opt.colorLight;
+				x.fillRect(nL, nT, nW, nH);
+				x.strokeRect(Math.floor(nL) + 0.5, Math.floor(nT) + 0.5, nHW, nRH);
+				x.strokeRect(Math.ceil(nL) - 0.5, Math.ceil(nT) - 0.5, nHW, nRH);
+			}
+		}
+		z.iElm.src = z.cElm.toDataURL('image/png');
+		z.iElm.style.display = 'block';
+		z.cElm.style.display = 'none';
+	}
+	/**
+	 * Clear the QRCode
+	 */
+	clear() {
+		this.ctx.clearRect(0, 0, this.cElm.width, this.cElm.height);
+		this.iElm.style.display = 'none';
+	}
+}
+/**
+ * @class QRCode
+ * @constructor
+ * @example
+ * new QRCode(document.getElementById("test"), "http://jindo.dev.naver.com/collie");
+ *
+ * @example
+ * var qrCodeData = new QRCode("test", {
+ *    text : "http://naver.com",
+ *    width : 128,
+ *    height : 128
+ * });
+ *
+ * qrCodeData.clear(); // Clear the QRCode.
+ * qrCodeData.makeCode("http://map.naver.com"); // Re-create the QRCode.
+ *
+ * @param {HTMLElement|String} el target element or 'id' attribute of element.
+ * @param {Object|String} vOption
+ * @param {String} vOption.text QRCode link data
+ * @param {Number} [vOption.width=256]
+ * @param {Number} [vOption.height=256]
+ * @param {String} [vOption.colorDark="#000000"]
+ * @param {String} [vOption.colorLight="#ffffff"]
+ * @param {QRErrorCorrectLevel} [vOption.correctLevel=QRErrorCorrectLevel.H] [L|M|Q|H]
+ */
+export class QRCode {
+	constructor(elm, opt = {}) {
+		const z = this;
+		z.opt = {
+			width: 256,
+			height: 256,
+			colorDark: '#000000',
+			colorLight: '#ffffff',
+			correctLevel: QRErrorCorrectLevel.H,
+		};
+		if (typeof opt === 'string')
+			opt = {
+				text: opt,
+			};
+		if (opt) for (let i in opt) z.opt[i] = opt[i]; // Overwrites options
+		const e = typeof elm === 'string' ? document.getElementById(elm) : elm,
+			DrawingClass = z.opt.useSVG ? SvgDrawer : z.opt.useHtml ? HtmlDrawer : CanvasDrawer;
+		z.elm = e;
+		z.drawer = new DrawingClass(e, z.opt);
+		if (z.opt.text) z.makeCode(z.opt.text);
+	}
+	/**
+	 * Make the QRCode
+	 *
+	 * @param {String} s link data
+	 */
+	makeCode(s) {
+		const z = this;
+		const cL = z.opt.correctLevel,
+			qrCD = new QRCodeModel(z._getTypeNumber(s, cL), cL);
+		qrCD.addData(s);
+		qrCD.make();
+		z.elm.title = s;
+		z.drawer.draw(qrCD);
+		z.makeImage();
+	}
+	/**
+	 * Get the type by string length
+	 *
+	 * @private
+	 * @param {String} s
+	 * @param {Number} nCL
+	 * @return {Number} type
+	 */
+	_getTypeNumber(s, nCL) {
+		let nT = 1;
+		const l = QRCodeLimitLength.length,
+			length = this._getUTF8Length(s);
+		for (let i = 0; i <= l; i++) {
+			let nL = 0;
+			const lL = QRCodeLimitLength[i],
+				Q = QRErrorCorrectLevel;
+			switch (nCL) {
+				case Q.L:
+					nL = lL[0];
+					break;
+				case Q.M:
+					nL = lL[1];
+					break;
+				case Q.Q:
+					nL = lL[2];
+					break;
+				case Q.H:
+					nL = lL[3];
+					break;
+			}
+			if (length <= nL) break;
+			else nT++;
+		}
+		if (nT > l) U.e('Too long data');
+		return nT;
+	}
+	_getUTF8Length(s) {
+		const rT = encodeURI(s)
+			.toString()
+			.replace(/\%[0-9a-fA-F]{2}/g, 'a');
+		return rT.length + (rT.length !== s ? 3 : 0);
+	}
+	/**
+	 * Make the Image from Canvas element
+	 * - It occurs automatically
+	 * - Android below 3 doesn't support Data-URI spec.
+	 *
+	 * @private
+	 */
+	makeImage() {
+		if (typeof this.drawer.makeImage === 'function') this.drawer.makeImage();
+	}
+	/**
+	 * reset size of the QRCode
+	 * @param {Number} [vOption.width=256]
+	 * @param {Number} [vOption.height=256]
+	 */
+	setSize(w = 256, h = 256) {
+		this.opt.width = w;
+		this.opt.height = h;
+	}
+	/**
+	 * reset color of the QRCode
+	 * @param {String} [vOption.colorDark="#000000"]
+	 * @param {String} [vOption.colorLight="#ffffff"]
+	 */
+	setColor(ccD = '#000000', ccL = '#ffffff') {
+		this.opt.colorDark = ccD;
+		this.opt.colorLight = ccL;
+	}
+	/**
+	 * reset recorrectLeve of the QRCode
+	 * @param {QRErrorCorrectLevel} [vOption.correctLevel=QRErrorCorrectLevel.H] [L|M|Q|H]
+	 */
+	setCorrectLevel(cL = QRErrorCorrectLevel.H) {
+		const Q = QRErrorCorrectLevel;
+		if (typeof cL === 'string') {
+			if (cL === 'H') this.opt.correctLevel = Q.H;
+			else if (cL === 'Q') this.opt.correctLevel = Q.Q;
+			else if (cL === 'M') this.opt.correctLevel = Q.M;
+			else if (cL === 'L') this.opt.correctLevel = Q.L;
+		} else this.opt.correctLevel = cL;
+	}
+	/**
+	 * Clear the QRCode
+	 */
+	clear() {
+		this.drawer.clear();
+	}
+}
+export class HtmlQRCode extends QRCode {
+	constructor(
+		elm,
+		text = 'HtmlQRCode',
+		width = 256,
+		height = 256,
+		colorDark = '#000000',
+		colorLight = '#ffffff',
+		correctLevel = QRErrorCorrectLevel.H
+	) {
+		super(elm, { text, width, height, colorDark, colorLight, correctLevel, useHtml: true });
+	}
+}
+export class SvgQRCode extends QRCode {
+	constructor(
+		elm,
+		text = 'SvgQRCode',
+		width = 256,
+		height = 256,
+		colorDark = '#000000',
+		colorLight = '#ffffff',
+		correctLevel = QRErrorCorrectLevel.H
+	) {
+		super(elm, { text, width, height, colorDark, colorLight, correctLevel, useSVG: true });
+	}
+}
+export class CanvasQRCode extends QRCode {
+	constructor(
+		elm,
+		text = 'CanvasQRCode',
+		width = 256,
+		height = 256,
+		colorDark = '#000000',
+		colorLight = '#ffffff',
+		correctLevel = QRErrorCorrectLevel.H
+	) {
+		super(elm, { text, width, height, colorDark, colorLight, correctLevel });
+	}
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 const cy = crypto.subtle;
@@ -1418,7 +2639,7 @@ export class Y {
 		return a;
 	}
 	static L2a(b) {
-		return new Promise((r) => {
+		return pr((r) => {
 			const fr = new FileReader();
 			fr.onload = () => r(fr.result);
 			fr.onerror = () => cb(r(fr.error), err(fr.error));
@@ -1452,7 +2673,7 @@ export class Y {
 	static b32d(b32) {
 		const a = b32.toUpperCase().replace(/[^A-Z234567]/g, ''),
 			b = a.padEnd(Math.ceil(a.length / 8) * 8, 'A'),
-			u = new Uint8Array((a.length * 5) / 8);
+			u = B.u8((a.length * 5) / 8);
 		let i = 0,
 			j = 0,
 			k = 0;
@@ -1476,7 +2697,7 @@ export class Y {
 		return u.buffer;
 	}
 	static b32e(ab) {
-		const u = new Uint8Array(ab),
+		const u = B.u8(ab),
 			a = [];
 		let j = 0,
 			k = 0;
