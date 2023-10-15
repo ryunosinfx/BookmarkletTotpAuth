@@ -1,4 +1,4 @@
-import { I, B, Y, H, Totp, Vw, jsQR, Auth } from './bookmarkletTotp.js';
+import { B, Y, H, Totp, Vw, Auth } from './bookmarkletTotp.js';
 import { CanvasQRCode } from './qrcode.es.min.js';
 class F {
 	static async l(p, c = 'application/json', isText) {
@@ -15,22 +15,7 @@ class F {
 		return isText ? await r.text() : await r.blob();
 	}
 }
-const Query = [
-	'main section>div',
-	'article>div>div>div',
-	{
-		name: [
-			'div>div>a>div>div:nth-child(1)>div>span>span',
-			'div>div>div>div>div>a>div>div:nth-child(1)>div>span>span',
-		],
-		id: 'div>div>a>div>div:nth-child(2)>div>span',
-		text: 'div>div>div>div>span',
-		href: 'div>div>div>div:nth-child(1)>a',
-		time: ['div>div>div>div>a>span', 'div>div>div:nth-child(1)>a>time'],
-	},
-];
 const SLASH = '&#47;';
-const QUOTE = '&quot;';
 const HTTP_REGXP = /http:\/\//g;
 const HTTPS_REGXP = /https:\/\//g;
 const A = 'ACCESS_POINT';
@@ -85,7 +70,7 @@ export class BK {
 	static async build() {
 		const p = Vw.gi('main');
 		const frame = Vw.div(p);
-		const src = Vw.h2(frame, { text: 'source' }, { margin: 0 });
+		const src = Vw.h2(frame, { text: 'Source of the bookmarklet' }, { margin: 0 });
 		const textArea = Vw.div(frame);
 		const ta = Vw.add(
 			textArea,
