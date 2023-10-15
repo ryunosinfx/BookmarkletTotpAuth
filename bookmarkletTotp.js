@@ -21,6 +21,7 @@ const isFn = (s) => typeof s === 'function';
 const pr = (f) => new Promise(f);
 const ct = (t) => clearTimeout(t);
 const st = (f, w) => setTimeout(f, w);
+const eu = (u) => encodeURI(u);
 const gBl = (b) => b.byteLength;
 const pv = (a) => (a && isS(a) ? Jp(a) : a);
 const ov = (a) => (typeof a === 'object' ? Jp(a) : a);
@@ -2149,14 +2150,14 @@ class SvgDw {
 		this.elm = elm;
 		this.opt = opt;
 	}
-	draw(qrCD) {
+	dw(qrCD) {
 		const z = this,
 			opt = z.opt,
 			elm = z.elm,
 			nC = qrCD.gMC();
 		elm.style.width = opt.width + 'px';
 		elm.style.height = opt.height + 'px';
-		z.clear();
+		z.cl();
 		const attrs = {
 			viewBox: '0 0 ' + nC + ' ' + nC,
 			width: '100%',
@@ -2181,7 +2182,7 @@ class SvgDw {
 		for (const [k, v] of Object.entries(a)) if (v) e.setAttribute(k, v);
 		return e;
 	}
-	clear() {
+	cl() {
 		while (this.elm.hasChildNodes()) this.elm.removeChild(this.elm.lastChild);
 	}
 }
@@ -2193,9 +2194,9 @@ class HtmlDw {
 	/**
 	 * Draw the QRCode
 	 *
-	 * @param {QRCode} qrCD
+	 * @param {QRC} qrCD
 	 */
-	draw(qrCD) {
+	dw(qrCD) {
 		const opt = this.opt,
 			elm = this.elm,
 			nC = qrCD.gMC(),
@@ -2230,7 +2231,7 @@ class HtmlDw {
 	/**
 	 * Clear the QRCode
 	 */
-	clear() {
+	cl() {
 		while (this.elm.hasChildNodes()) this.elm.removeChild(this.elm.lastChild);
 	}
 }
@@ -2248,7 +2249,7 @@ class CanvasDw {
 		z.cElm = I.c();
 		z.cElm.width = opt.width;
 		z.cElm.height = opt.height;
-		z.cElm.style.position = 'absolute';
+		z.cElm.style.position = C.a;
 		z.cElm.style.top = opt.height * -1;
 		elm.appendChild(z.cElm);
 		z.elm = elm;
@@ -2261,9 +2262,9 @@ class CanvasDw {
 	/**
 	 * Draw the QRCode
 	 *
-	 * @param {QRCode} qrCD
+	 * @param {QRC} qrCD
 	 */
-	draw(qrCD) {
+	dw(qrCD) {
 		const z = this,
 			opt = z.opt;
 		z.cElm.width = opt.width;
@@ -2276,7 +2277,7 @@ class CanvasDw {
 			nHW = Math.round(nW),
 			nRH = Math.round(nH);
 		imgE.style.display = 'none';
-		z.clear();
+		z.cl();
 		for (let rI = 0; rI < nC; rI++) {
 			for (let cI = 0; cI < nC; cI++) {
 				const isDark = qrCD.isD(rI, cI),
@@ -2297,7 +2298,7 @@ class CanvasDw {
 	/**
 	 * Clear the QRCode
 	 */
-	clear() {
+	cl() {
 		this.ctx.clearRect(0, 0, this.cElm.width, this.cElm.height);
 		this.iElm.style.display = 'none';
 	}
@@ -2315,7 +2316,7 @@ class CanvasDw {
  *    height : 128
  * });
  *
- * qrCodeData.clear(); // Clear the QRCode.
+ * qrCodeData.cl(); // Clear the QRCode.
  * qrCodeData.makeCode("http://map.naver.com"); // Re-create the QRCode.
  *
  * @param {HTMLElement|String} el target element or 'id' attribute of element.
@@ -2327,7 +2328,7 @@ class CanvasDw {
  * @param {String} [vOption.colorLight="#ffffff"]
  * @param {QRErrorCorrectLevel} [vOption.correctLevel=QRErrorCorrectLevel.H] [L|M|Q|H]
  */
-export class QRCode {
+export class QRC {
 	constructor(elm, opt = {}) {
 		const z = this;
 		z.opt = {
@@ -2360,7 +2361,7 @@ export class QRCode {
 		q.addData(s);
 		q.make();
 		z.elm.title = s;
-		z.dw.draw(q);
+		z.dw.dw(q);
 		z.mkI();
 	}
 	/**
@@ -2449,14 +2450,14 @@ export class QRCode {
 	/**
 	 * Clear the QRCode
 	 */
-	clear() {
-		this.dw.clear();
+	cl() {
+		this.dw.cl();
 	}
 }
-export class HtmlQRCode extends QRCode {
+export class HtmlQRC extends QRC {
 	constructor(
 		elm,
-		text = 'HtmlQRCode',
+		text = 'h',
 		width = 256,
 		height = 256,
 		colorDark = '#000000',
@@ -2466,10 +2467,10 @@ export class HtmlQRCode extends QRCode {
 		super(elm, { text, width, height, colorDark, colorLight, correctLevel, useHtml: true });
 	}
 }
-export class SvgQRCode extends QRCode {
+export class SvgQRC extends QRC {
 	constructor(
 		elm,
-		text = 'SvgQRCode',
+		text = 's',
 		width = 256,
 		height = 256,
 		colorDark = '#000000',
@@ -2479,10 +2480,10 @@ export class SvgQRCode extends QRCode {
 		super(elm, { text, width, height, colorDark, colorLight, correctLevel, useSVG: true });
 	}
 }
-export class CanvasQRCode extends QRCode {
+export class CanvasQRC extends QRC {
 	constructor(
 		elm,
-		text = 'CanvasQRCode',
+		text = 'c',
 		width = 256,
 		height = 256,
 		colorDark = '#000000',
@@ -2801,21 +2802,18 @@ export class I {
 }
 class L {
 	static k = async (k) => await H.d(k, 100);
-	static async save(k, v) {
-		if (!v || isN(v)) localStorage.setItem(await L.k(k), v);
-		else {
-			console.log('save v:' + Js(v));
-			localStorage.setItem(await L.k(k), await I.compess(Y.s2u(await Cy.enc(Js(v)))));
-		}
-	}
+	static save = async (k, v) =>
+		!v || isN(v)
+			? localStorage.setItem(await L.k(k), v)
+			: localStorage.setItem(await L.k(k), await I.compess(Y.s2u(await Cy.enc(Js(v)))));
+
 	static async load(k) {
 		const d = localStorage.getItem(await L.k(k));
-		console.log('L.load k:' + k + '/d:' + d);
 		return !d || isN(d) ? d : Jp(await Cy.dec(Y.u2s(await I.decompress(d))));
 	}
 }
-class TU {
-	static convertGebavToCamel(t = '') {
+export class Vw {
+	static cnvtGebav2Camel(t = '') {
 		if (!t) return t;
 		const s = t.split('-');
 		for (let i = 1, j = s.length; i < j; i++) {
@@ -2825,8 +2823,6 @@ class TU {
 		}
 		return s.join('');
 	}
-}
-export class Vw {
 	static addHiddenDiv = (p, att = {}) => Vw.add(p, 'div', att, { display: 'none' });
 	static add(p, tN, att = {}, sty = {}) {
 		const e = Vw.ce(tN);
@@ -2846,10 +2842,9 @@ export class Vw {
 	static rc = (e) => {
 		while (e.firstChild) e.removeChild(e.firstChild);
 	};
-	static sS = (e, sty = {}) => Object.keys(sty).map((k) => (e.style[TU.convertGebavToCamel(k)] = sty[k]));
-	static gS = (e, k) => e.style[TU.convertGebavToCamel(k)];
-	static tS = (e, k, v, v2) =>
-		(e.style[TU.convertGebavToCamel(k)] = e.style[TU.convertGebavToCamel(k)] === v ? v2 : v);
+	static sS = (e, sty = {}) => Object.keys(sty).map((k) => (e.style[Vw.cnvtGebav2Camel(k)] = sty[k]));
+	static gS = (e, k) => e.style[Vw.cnvtGebav2Camel(k)];
+	static tS = (e, k, v, v2) => (e.style[Vw.cnvtGebav2Camel(k)] = e.style[Vw.cnvtGebav2Camel(k)] === v ? v2 : v);
 	static click = (e, cb) => Vw.ael(e, 'click', cb);
 	static change = (e, cb) => Vw.ael(e, 'change', cb);
 	static input = (e, cb) => Vw.ael(e, 'input', cb);
@@ -2896,10 +2891,19 @@ export class Vw {
 		};
 	};
 }
+class C {
+	static p256 = '256px';
+	static bi = 'linear-gradient(90deg, transparent 0 50%, blue 50% 100%)';
+	static a = 'absolute';
+}
 export class Auth {
 	static k = async () => await H.d(location.origin + '/Auth/' + SALT, 1230);
 	static E = {};
 	static T = {};
+	static Q = {};
+	static d = 10 * 1000;
+	static as = { transform: ['scaleX(0%) ', 'scaleX(100%)'] };
+	static at = { duration: Auth.d, iterations: 1 };
 	static state = {};
 	static Types = ['SHA-1', 'SHA-256', 'SHA-384', 'SHA-512'];
 	static build() {
@@ -2909,7 +2913,7 @@ export class Auth {
 				{ class: 'a' },
 				{
 					backgroundColor: '#ccc',
-					position: 'absolute',
+					position: C.a,
 					minWidth: '300px',
 					maxWidth: '95vw',
 					minHeight: '10px',
@@ -3001,66 +3005,82 @@ export class Auth {
 			l = Auth.E.l;
 		Vw.rc(l);
 		for (const k in e.v) {
-			console.log('buildList k:' + k, e);
-			const r = Vw.div(
-				l,
-				{},
-				{ padding: '5px', display: 'flex', justifyContent: 'space-between', cursor: 'pointer' }
-			);
-			const t = Vw.div(
-				r,
-				{ text: k },
-				{ padding: '5px', fontSize: '80%', fontWeight: 'bold', lineHeight: '2em' }
-			);
-			const v = Vw.div(
-				r,
-				{},
-				{
-					padding: '0',
-					backgroundColor: '#ddd',
-					minWidth: '4em',
-					maxWidth: '4em',
-					display: 'flex',
-					flexDirection: 'column',
-				}
-			);
-			const s = Vw.div(
-				v,
-				{},
-				{
-					minWidth: '4em',
-					lineHeight: '2em',
-					minHeight: '2em',
-					textAlign: 'center',
-					backgroundColor: '#ddd',
-				}
-			);
-			const b = Vw.div(
-				v,
-				{},
-				{
-					position: 'relative',
-					left: '-4em',
-					minWidth: '8em',
-					minHeight: '5px',
-					visibility: 'hidden',
-					background: 'linear-gradient(90deg, transparent 0 50%, blue 50% 100%)',
-				}
-			);
-			const rBtn = Vw.btn(r, { text: 'remove' });
-			const eBtn = Vw.btn(r, { text: 'export' });
-			const d = e.v[k];
+			// console.log('buildList k:' + k, e);
+			const f = Vw.div(l, {}, {}),
+				r = Vw.div(
+					f,
+					{},
+					{ padding: '5px', display: 'flex', justifyContent: 'space-between', cursor: 'pointer' }
+				),
+				qr = Vw.div(f, {}, { display: 'none', backgroundColor: '#fff', width: C.p256, padding: ' 5px' }),
+				q = Vw.div(
+					qr,
+					{},
+					{
+						width: C.p256,
+						height: C.p256,
+						paddingBottom: '5px',
+					}
+				),
+				i = Vw.div(
+					qr,
+					{},
+					{
+						position: 'relative',
+						left: '-271px',
+						width: '532px',
+						height: '5px',
+						background: C.bi,
+					}
+				),
+				t = Vw.div(r, { text: k }, { padding: '5px', fontSize: '80%', fontWeight: 'bold', lineHeight: '2em' }),
+				v = Vw.div(
+					r,
+					{},
+					{
+						padding: '0',
+						backgroundColor: '#ddd',
+						minWidth: '4em',
+						maxWidth: '4em',
+						display: 'flex',
+						flexDirection: 'column',
+					}
+				),
+				s = Vw.div(
+					v,
+					{},
+					{
+						minWidth: '4em',
+						lineHeight: '2em',
+						minHeight: '2em',
+						textAlign: 'center',
+						backgroundColor: '#ddd',
+					}
+				),
+				b = Vw.div(
+					v,
+					{},
+					{
+						position: 'relative',
+						left: '-4em',
+						minWidth: '8em',
+						minHeight: '5px',
+						visibility: 'hidden',
+						background: C.bi,
+					}
+				),
+				rBtn = Vw.btn(r, { text: 'del' }),
+				eBtn = Vw.btn(r, { text: 'export' }),
+				d = e.v[k];
 			Vw.click(t, async () => {
-				const duration = 10 * 1000,
-					newspaperTiming = { duration, iterations: 1 },
-					t = st(() => {
-						Vw.sS(b, { visibility: 'hidden' });
-						s.textContent = ' ';
-					}, duration);
-				ct(Auth.T[d.name]);
-				Auth.T[d.name] = t;
+				const t = st(() => {
+					Vw.sS(b, { visibility: 'hidden' });
+					s.textContent = ' ';
+				}, Auth.d);
+				ct(Auth.Q[d.name]);
+				Auth.Q[d.name] = t;
 				s.textContent = await Auth.vy(d.secret, d.period, d.digits, d.type);
-				b.animate({ transform: ['scaleX(0%) ', 'scaleX(100%)'] }, newspaperTiming);
+				b.animate(Auth.as, Auth.at);
 				Vw.sS(b, { visibility: 'visible' });
 			});
 			Vw.click(rBtn, async () => {
@@ -3068,16 +3088,52 @@ export class Auth {
 				await Auth.rm(k);
 				Vw.rm(r);
 			});
+			Vw.click(eBtn, async () => (!confirm('Is show secret OK?') ? '' : await Auth.gExprtF(q, i, qr, d)()));
 		}
 	}
-	static getScanimgF(qElm, r01, r02) {
-		return async () => {
-			Vw.rc(r01);
-			const dURI = await Vw.fr(qElm.files[0]).asDataURL(),
-				p = await Auth.gSF(dURI, Vw.add(r01, 'canvas'));
-			if (p && p.data) r02.textContent = Auth.decode(p.data);
+	static gExprtF =
+		(q, a, p, d, h = 256) =>
+		async () => {
+			const n = d.name.split(':'),
+				userId = n.pop(),
+				issuer = n.pop();
+			let s = Auth.mkOtpURI(issuer, userId, d.secret, d.period, d.type, d.digits),
+				i = false;
+			while (!i) {
+				try {
+					s = s.split('&a=a').join('&a=aA');
+					Vw.rc(q);
+					new CanvasQRC(q, s, h, h);
+					const iE = Vw.gT(q, 'img'),
+						p = await Auth.gSF(iE.src);
+					i = p !== null;
+				} catch (e) {
+					console.log(e);
+				}
+				if (s.length > 300) break;
+			}
+			Vw.rc(q);
+			new CanvasQRC(q, s, h, h);
+			Vw.sS(p, { display: 'block' });
+			a.animate(Auth.as, Auth.at);
+			const t = st(() => {
+				Vw.sS(p, { display: 'none' });
+				Vw.rc(q);
+			}, Auth.d);
+			ct(Auth.T[d.name]);
+			Auth.T[d.name] = t;
 		};
-	}
+	static mkOtpURI = (issuer, userId, secret, period, type, digits) =>
+		'otpauth:/' +
+		`/totp/${eu(issuer)}:${eu(userId)}?secret=${secret}&a=a&issuer=${eu(issuer)}&algorithm=${type
+			.split('-')
+			.join('')}&digits=${digits}&period=${period}`;
+	static getScanimgF = (qElm, r01, r02) => async () => {
+		Vw.rc(r01);
+		const dURI = await Vw.fr(qElm.files[0]).asDataURL(),
+			p = await Auth.gSF(dURI, Vw.add(r01, 'canvas'));
+		if (p && p.data) r02.textContent = Auth.decode(p.data);
+	};
 	static decode(otpURI) {
 		if (otpURI.indexOf('otpauth') !== 0) return otpURI;
 		const a = otpURI.split('?'),
@@ -3136,12 +3192,9 @@ export class Auth {
 		});
 		await Auth.buildList();
 	};
-	static rm = async (n) => {
-		await Auth.sd({ name: n, isRm: 1 });
-	};
+	static rm = async (n) => await Auth.sd({ name: n, isRm: 1 });
 	static sd = async (d) => {
-		const e = await Auth.ld(),
-			b = Auth.E;
+		const e = await Auth.ld();
 		console.log('A save k:' + e.k, a);
 		if (d.isRm) delete e.v[d.name];
 		else e.v[d.name] = d;

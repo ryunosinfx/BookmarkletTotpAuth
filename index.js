@@ -1,4 +1,4 @@
-import { B, Y, H, Totp, Vw, Auth, CanvasQRCode } from './bookmarkletTotp.js';
+import { B, Y, H, Totp, Vw, Auth, CanvasQRC } from './bookmarkletTotp.js';
 class F {
 	static async l(p, c = 'application/json', isText) {
 		const q = {
@@ -66,6 +66,7 @@ export class BookmarkletBuilder {
 }
 const TOTPpath = './bookmarkletTotp.js';
 export class BK {
+	static FirefoxMax = 64 * 1024;
 	static async build() {
 		const p = Vw.gi('main');
 		const frame = Vw.div(p);
@@ -95,7 +96,13 @@ export class BK {
 	}
 	static init(aElm, inputElm, sElm) {
 		Vw.sa(aElm, { href: inputElm.value });
-		sElm.textContent = inputElm.value.length + 'Byte';
+		sElm.textContent =
+			inputElm.value.length +
+			'byte /FirefoxMax:' +
+			BK.FirefoxMax +
+			'byte /left size:' +
+			(BK.FirefoxMax - inputElm.value.length) +
+			'byte';
 	}
 	static setLink = (aElm, inputElm, sElm) => {
 		return () => BK.init(aElm, inputElm, sElm);
@@ -194,7 +201,7 @@ export class Test {
 				text = text.split('&a=a').join('&a=aA');
 				Vw.rc(w);
 				console.log('w:' + w + '/text:' + text + '/h:' + h);
-				new CanvasQRCode(w, text, h, h);
+				new CanvasQRC(w, text, h, h);
 				cElm.textContent = text;
 				const iE = Vw.gT(w, 'img'),
 					p = await Auth.gSF(iE.src);
@@ -208,7 +215,7 @@ export class Test {
 			}
 		}
 		Vw.rc(w);
-		new CanvasQRCode(w, text, h, h);
+		new CanvasQRC(w, text, h, h);
 		console.log('OK! text:' + text);
 		const iE = Vw.gT(w, 'img'),
 			p = await Auth.gSF(iE.src);
