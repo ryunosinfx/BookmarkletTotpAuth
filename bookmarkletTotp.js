@@ -4,34 +4,34 @@ const te = new TextEncoder('utf-8'),
 const rnd = (a = 1) => Math.random() * a;
 const NullArr = [null];
 const cType = 'application/x-www-form-urlencoded';
-const J = JSON;
-const Jp = (a) => J.parse(a);
-const Js = (a) => J.stringify(a);
-const SALT =
-	'メロスは激怒した。必ず、かの邪智暴虐じゃちぼうぎゃくの王を除かなければならぬと決意した。メロスには政治がわからぬ。メロスは、村の牧人である。笛を吹き、羊と遊んで暮して来た。けれども邪悪に対しては、人一倍に敏感であった。';
-const w = (...a) => console.warn(a);
-const io = (...a) => console.info(a);
-const err = (...a) => console.error(a);
-const now = () => Date.now();
-const crv = (t) => crypto.getRandomValues(t);
-const isS = (s) => typeof s === 'string';
-const isN = (s) => typeof s === 'number';
-const isArr = (a) => Array.isArray(a);
-const isFn = (s) => typeof s === 'function';
-const pr = (f) => new Promise(f);
-const ct = (t) => clearTimeout(t);
-const st = (f, w) => setTimeout(f, w);
-const eu = (u) => encodeURI(u);
-const gBl = (b) => b.byteLength;
-const pv = (a) => (a && isS(a) ? Jp(a) : a);
-const ov = (a) => (typeof a === 'object' ? Jp(a) : a);
-const cb = (a) => a;
-const rsm = () => Math.floor(rnd(SlpMs)) + SlpMs;
-const ef = (e, id = '', l = null) => {
-	cb(w(`${id} ${e.message}`), w(e.stack));
-	if (l && isFn(l)) cb(l(`${id} ${e.message}`), l(e.stack));
-	return null;
-};
+const J = JSON,
+	Jp = (a) => J.parse(a),
+	Js = (a) => J.stringify(a),
+	SALT =
+		'メロスは激怒した。必ず、かの邪智暴虐じゃちぼうぎゃくの王を除かなければならぬと決意した。メロスには政治がわからぬ。メロスは、村の牧人である。笛を吹き、羊と遊んで暮して来た。けれども邪悪に対しては、人一倍に敏感であった。',
+	w = (...a) => console.warn(a),
+	io = (...a) => console.info(a),
+	err = (...a) => console.error(a),
+	now = () => Date.now(),
+	crv = (t) => crypto.getRandomValues(t),
+	isS = (s) => typeof s === 'string',
+	isN = (s) => typeof s === 'number',
+	isArr = (a) => Array.isArray(a),
+	isFn = (s) => typeof s === 'function',
+	pr = (f) => new Promise(f),
+	ct = (t) => clearTimeout(t),
+	st = (f, w) => setTimeout(f, w),
+	eu = (u) => encodeURI(u),
+	gBl = (b) => b.byteLength,
+	pv = (a) => (a && isS(a) ? Jp(a) : a),
+	ov = (a) => (typeof a === 'object' ? Jp(a) : a),
+	cb = (a) => a,
+	rsm = () => Math.floor(rnd(SlpMs)) + SlpMs,
+	ef = (e, id = '', l = null) => {
+		cb(w(`${id} ${e.message}`), w(e.stack));
+		if (l && isFn(l)) cb(l(`${id} ${e.message}`), l(e.stack));
+		return null;
+	};
 function getEF(i, l) {
 	return (e) => ef(e, i, l);
 }
@@ -114,7 +114,7 @@ class W {
 			}
 		}
 	}
-	static async gV() {
+	static gV() {
 		const v = Jp(W.v),
 			m = Jp(W.dj(W.D, v));
 		W.vd(m, v);
@@ -127,7 +127,7 @@ class W {
 		return m;
 	}
 	static V = null;
-	static init = async () => (W.V ? '' : (W.V = await W.gV()));
+	static init = () => (W.V ? '' : (W.V = W.gV()));
 }
 /*0 BitMatrix*/
 class BM {
@@ -1290,8 +1290,8 @@ class JsQR {
 		}
 		return U.n(`scan B ls:${L}`);
 	}
-	static async exec(u8a, width, height, providedOptions = {}) {
-		await W.init();
+	static exec(u8a, width, height, providedOptions = {}) {
+		W.init();
 		const o = {
 			inversionAttempts: 'attemptBoth',
 		};
@@ -2823,7 +2823,7 @@ export class Vw {
 		}
 		return s.join('');
 	}
-	static addHiddenDiv = (p, att = {}) => Vw.add(p, 'div', att, { display: 'none' });
+	static addHiddenDiv = (p, att = {}) => Vw.add(p, 'div', att, C.dNone);
 	static add(p, tN, att = {}, sty = {}) {
 		const e = Vw.ce(tN);
 		Vw.sa(e, att);
@@ -2895,8 +2895,11 @@ class C {
 	static p256 = '256px';
 	static bi = 'linear-gradient(90deg, transparent 0 50%, blue 50% 100%)';
 	static a = 'absolute';
+	static dNone = { display: 'none' };
+	static dBlock = { display: 'block' };
 }
 export class Auth {
+	static ID = async () => await H.d(location.origin + '/ID/' + SALT, 10);
 	static k = async () => await H.d(location.origin + '/Auth/' + SALT, 1230);
 	static E = {};
 	static T = {};
@@ -2905,12 +2908,16 @@ export class Auth {
 	static as = { transform: ['scaleX(0%) ', 'scaleX(100%)'] };
 	static at = { duration: Auth.d, iterations: 1 };
 	static state = {};
+	static c = null;
+	static v = null;
 	static Types = ['SHA-1', 'SHA-256', 'SHA-384', 'SHA-512'];
-	static build() {
+	static async build() {
+		const id = await Auth.ID();
+		if (Vw.gi(id)) return;
 		const body = Vw.gB(),
 			frame = Vw.div(
 				body,
-				{ class: 'a' },
+				{ id },
 				{
 					backgroundColor: '#ccc',
 					position: C.a,
@@ -2944,7 +2951,7 @@ export class Auth {
 					cursor: 'pointer',
 				}
 			),
-			input = Vw.div(form, {}, { display: 'none' }),
+			input = Vw.div(form, {}, C.dNone),
 			r0 = Vw.div(input, {}, rowSty),
 			qc = Vw.div(r0, { text: 'QRCode' }, { fontSize: '80%', fontWeight: 'bold' }),
 			qElm = Vw.ipt(r0, { type: 'file' }),
@@ -2981,11 +2988,12 @@ export class Auth {
 			r8 = Vw.div(input, {}, rowSty),
 			aBtn = Vw.btn(r8, { text: 'Auth' }),
 			sBtn = Vw.btn(r8, { text: 'Save' });
-		for (const type of Auth.Types) {
-			Vw.add(select, 'option', { text: type, value: type });
-		}
+		Auth.v = Vw.ce('video'); // Vw.add(bar, 'video', { a: 'autoplay' }, { width: '98%' });
+		Auth.c = Vw.add(frame, 'canvas', { a: 'autoplay' }, { width: '98%', display: 'none' });
+		for (const type of Auth.Types) Vw.add(select, 'option', { text: type, value: type });
 		select.value = Auth.Types[0];
 		Vw.click(cBtn, Auth.close(frame));
+		Vw.click(Auth.c, () => Vw.sS(Auth.c, C.dNone));
 		Vw.click(title, () => Vw.tS(inner, 'display', 'none', 'block'));
 		Vw.click(bar, () => Vw.tS(input, 'display', 'none', 'block'));
 		Auth.E = { t: select, n: nElm, s: sElm, p: pElm, d: dElm, l: list };
@@ -2995,6 +3003,7 @@ export class Auth {
 		Vw.click(aBtn, async () => {
 			cElm.textContent = await Auth.verify();
 		});
+		Vw.click(qBtn, Auth.sc(r01, r02));
 		Vw.click(sBtn, Auth.save);
 		Vw.change(qElm, Auth.getScanimgF(qElm, r01, r02));
 		Auth.buildList();
@@ -3034,7 +3043,7 @@ export class Auth {
 					}
 				),
 				t = Vw.div(r, { text: k }, { padding: '5px', fontSize: '80%', fontWeight: 'bold', lineHeight: '2em' }),
-				v = Vw.div(
+				w = Vw.div(
 					r,
 					{},
 					{
@@ -3047,7 +3056,7 @@ export class Auth {
 					}
 				),
 				s = Vw.div(
-					v,
+					w,
 					{},
 					{
 						minWidth: '4em',
@@ -3058,7 +3067,7 @@ export class Auth {
 					}
 				),
 				b = Vw.div(
-					v,
+					w,
 					{},
 					{
 						position: 'relative',
@@ -3108,16 +3117,16 @@ export class Auth {
 						p = await Auth.gSF(iE.src);
 					i = p !== null;
 				} catch (e) {
-					console.log(e);
+					ef(e);
 				}
 				if (s.length > 300) break;
 			}
 			Vw.rc(q);
 			new CanvasQRC(q, s, h, h);
-			Vw.sS(p, { display: 'block' });
+			Vw.sS(p, C.dBlock);
 			a.animate(Auth.as, Auth.at);
 			const t = st(() => {
-				Vw.sS(p, { display: 'none' });
+				Vw.sS(p, C.dNone);
 				Vw.rc(q);
 			}, Auth.d);
 			ct(Auth.T[d.name]);
@@ -3211,6 +3220,82 @@ export class Auth {
 		console.log('load k:' + e.k, a);
 		return e.v[n];
 	};
+	static sc = (r01, r02) => async () => {
+		try {
+			const v = Auth.v,
+				m = { a: 0 };
+			v.srcObject = await navigator.mediaDevices.getDisplayMedia({
+				video: {
+					cursor: 'always',
+				},
+				audio: false,
+			});
+			v.setAttribute('playsinline', true); // required to tell iOS safari we don't want fullscreen
+			v.play();
+			io('START');
+			Vw.sS(Auth.c, C.dBlock);
+			while (m.a < 100) {
+				requestAnimationFrame(Auth.tick(r01, r02, m));
+				await slp(100);
+				m.a++;
+			}
+			v.srcObject.getTracks().forEach((t) => t.stop());
+			v.srcObject = null;
+		} catch (e) {
+			ef(e);
+		}
+	};
+	static dwL(c, b, e, color = '#FF3B58') {
+		const x = c.getContext('2d');
+		x.beginPath();
+		x.moveTo(b.x, b.y);
+		x.lineTo(e.x, e.y);
+		x.lineWidth = 4;
+		x.strokeStyle = color;
+		x.stroke();
+	}
+	static dwB(c, code) {
+		const l = code.location;
+		Auth.dwL(c, l.topLeftCorner, l.topRightCorner);
+		Auth.dwL(c, l.topRightCorner, l.bottomRightCorner);
+		Auth.dwL(c, l.bottomRightCorner, l.bottomLeftCorner);
+		Auth.dwL(c, l.bottomLeftCorner, l.topLeftCorner);
+	}
+	static tick(r01, r02, m) {
+		return async () => {
+			if (m.a > 100) return;
+			const v = Auth.v,
+				vT = v.srcObject.getVideoTracks()[0];
+			io('Track settings:', JSON.stringify(vT.getSettings(), null, 2));
+			io('Track constraints:', JSON.stringify(vT.getConstraints(), null, 2));
+			io('A v.readyState :' + v.readyState);
+			if (v.readyState === v.HAVE_ENOUGH_DATA) {
+				const c = Auth.c,
+					x = c.getContext('2d');
+				io('A c2:', c);
+				c.height = v.videoHeight;
+				c.width = v.videoWidth;
+				x.drawImage(v, 0, 0, c.width, c.height);
+				const id = x.getImageData(0, 0, c.width, c.height),
+					code = jsQR(id.data, id.width, id.height, {
+						inversionAttempts: 'dontInvert',
+					});
+				io('A code', code);
+				if (code) {
+					m.a = 1000;
+					Vw.rc(r01);
+					const dURI = c.toDataURL(),
+						c2 = Vw.add(r01, 'canvas'),
+						p = await Auth.gSF(dURI, c2);
+					Auth.dwB(c, code);
+					Auth.dwB(c2, p);
+					Vw.sS(Auth.c, C.dNone);
+					if (p && p.data) r02.textContent = Auth.decode(p.data);
+				}
+			}
+			io('A v.readyState :' + v.readyState);
+		};
+	}
 }
 const a = function () {
 	// alert('');
