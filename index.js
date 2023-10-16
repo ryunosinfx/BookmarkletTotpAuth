@@ -330,3 +330,48 @@ export class Test {
 }
 Test.run();
 BK.build();
+export class VideoTest {
+	static videoElem = null;
+	static logElem = null;
+	static displayMediaOptions = {
+		video: {
+			cursor: 'always',
+		},
+		audio: false,
+	};
+	static build() {
+		const main = Vw.gi('main');
+		Vw.add(main, 'p', { text: 'Test' });
+		const a = Vw.add(main, 'p', {});
+		const startElem = Vw.add(a, 'button', { text: 'Start Capture', id: 'start' });
+		const stopElem = Vw.add(a, 'button', { text: 'Stop Capture', id: 'stop' });
+		VideoTest.videoElem = Vw.add(a, 'video', { autoplay: 'autoplay', id: 'video' });
+		Vw.add(a, 'strong', { text: 'Log:' });
+		VideoTest.logElem = Vw.add(a, 'pre', { id: 'log' });
+		Vw.click(startElem, (evt) => VideoTest.startCapture());
+		Vw.click(stopElem, (evt) => VideoTest.stopCapture());
+	}
+
+	static async startCapture() {
+		VideoTest.logElem.innerHTML = '';
+		try {
+			VideoTest.videoElem.srcObject = await navigator.mediaDevices.getDisplayMedia(VideoTest.displayMediaOptions);
+			VideoTest.dumpOptionsInfo();
+		} catch (err) {
+			console.error('Error: ' + err);
+		}
+	}
+	static stopCapture(evt) {
+		const tracks = VideoTest.videoElem.srcObject.getTracks();
+		tracks.forEach((track) => track.stop());
+		VideoTest.videoElem.srcObject = null;
+	}
+	static dumpOptionsInfo() {
+		const videoTrack = VideoTest.videoElem.srcObject.getVideoTracks()[0];
+
+		console.info('Track settings:');
+		console.info(JSON.stringify(videoTrack.getSettings(), null, 2));
+		console.info('Track constraints:');
+		console.info(JSON.stringify(videoTrack.getConstraints(), null, 2));
+	}
+}
