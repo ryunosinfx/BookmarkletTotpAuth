@@ -2843,12 +2843,14 @@ export class Vw {
 		while (e.firstChild) e.removeChild(e.firstChild);
 	};
 	static sS = (e, sty = {}) => Object.keys(sty).map((k) => (e.style[Vw.cnvtGebav2Camel(k)] = sty[k]));
+	static sA = (e, k, v) => (e.style[Vw.cnvtGebav2Camel(k)] = v);
 	static gS = (e, k) => e.style[Vw.cnvtGebav2Camel(k)];
 	static tS = (e, k, v, v2) => (e.style[Vw.cnvtGebav2Camel(k)] = e.style[Vw.cnvtGebav2Camel(k)] === v ? v2 : v);
 	static click = (e, cb) => Vw.ael(e, 'click', cb);
 	static change = (e, cb) => Vw.ael(e, 'change', cb);
 	static input = (e, cb) => Vw.ael(e, 'input', cb);
 	static ael = (e, ev, cb) => (e.addEventListener(ev, cb) ? cb : cb);
+	static rel = (e, ev, cb) => (e.removeEventListener(ev, cb) ? cb : cb);
 	static text = (e, msg) => (msg ? (e.textContent = msg) : e.textContent);
 	static aC = (e, cN) => e.classList.add(cN);
 	static rC = (e, cN) => e.classList.remove(cN);
@@ -2890,6 +2892,35 @@ export class Vw {
 			},
 		};
 	};
+	static beDraggable(e) {
+		const p = 'px',
+			T = 'top',
+			L = 'left',
+			a = (k) => Vw.gS(e, k).split(p).join('') * 1,
+			b = (k, x) => Vw.sA(e, k, x + p),
+			m = {},
+			w = window,
+			f = (evt) => {
+				st(() => {
+					m.eX = evt.clientX;
+					m.eY = evt.clientY;
+					b(L, m.x + m.eX - m.sX);
+					b(T, m.y + m.eY - m.sY);
+				}, 1);
+			};
+		Vw.ael(w, 'mousedown', async (evt) => {
+			Vw.sA(e, 'cursor', 'grab');
+			m.x = a(L);
+			m.y = a(T);
+			m.sX = evt.clientX;
+			m.sY = evt.clientY;
+			Vw.ael(w, 'mousemove', f);
+		});
+		Vw.ael(w, 'mouseup', () => {
+			Vw.sA(e, 'cursor', 'auto');
+			Vw.rel(w, 'mousemove', f);
+		});
+	}
 }
 class C {
 	static p256 = '256px';
@@ -2909,7 +2940,7 @@ export class Auth {
 	static at = { duration: Auth.d, iterations: 1 };
 	static state = {};
 	static c = null;
-	static v = null;
+	static v = Vw.ce('video');
 	static Types = ['SHA-1', 'SHA-256', 'SHA-384', 'SHA-512'];
 	static async build() {
 		const id = await Auth.ID();
@@ -2988,8 +3019,7 @@ export class Auth {
 			r8 = Vw.div(input, {}, rowSty),
 			aBtn = Vw.btn(r8, { text: 'Auth' }),
 			sBtn = Vw.btn(r8, { text: 'Save' });
-		Auth.v = Vw.ce('video'); // Vw.add(bar, 'video', { a: 'autoplay' }, { width: '98%' });
-		Auth.c = Vw.add(frame, 'canvas', { a: 'autoplay' }, { width: '98%', display: 'none' });
+		Auth.c = Vw.add(frame, 'canvas', {}, { width: '98%', display: 'none' });
 		for (const type of Auth.Types) Vw.add(select, 'option', { text: type, value: type });
 		select.value = Auth.Types[0];
 		Vw.click(cBtn, Auth.close(frame));
@@ -3007,6 +3037,7 @@ export class Auth {
 		Vw.click(sBtn, Auth.save);
 		Vw.change(qElm, Auth.getScanimgF(qElm, r01, r02));
 		Auth.buildList();
+		Vw.beDraggable(frame);
 	}
 	static close = (f) => () => Vw.rm(f);
 	static async buildList() {
@@ -3204,10 +3235,10 @@ export class Auth {
 	static rm = async (n) => await Auth.sd({ name: n, isRm: 1 });
 	static sd = async (d) => {
 		const e = await Auth.ld();
-		console.log('A save k:' + e.k, a);
+		io('A save k:' + e.k, a);
 		if (d.isRm) delete e.v[d.name];
 		else e.v[d.name] = d;
-		console.log('B save k:' + e.k);
+		io('B save k:' + e.k);
 		await L.save(e.k, e.v);
 	};
 	static ld = async () => {
@@ -3217,7 +3248,7 @@ export class Auth {
 	};
 	static load = async (n) => {
 		const e = await Auth.ld();
-		console.log('load k:' + e.k, a);
+		io('load k:' + e.k, a);
 		return e.v[n];
 	};
 	static sc = (r01, r02) => async () => {
@@ -3272,7 +3303,6 @@ export class Auth {
 			if (v.readyState === v.HAVE_ENOUGH_DATA) {
 				const c = Auth.c,
 					x = c.getContext('2d');
-				io('A c2:', c);
 				c.height = v.videoHeight;
 				c.width = v.videoWidth;
 				x.drawImage(v, 0, 0, c.width, c.height);
