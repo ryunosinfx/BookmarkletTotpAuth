@@ -2928,6 +2928,8 @@ class C {
 	static a = 'absolute';
 	static dNone = { display: 'none' };
 	static dBlock = { display: 'block' };
+	static vH = { visibility: 'hidden' };
+	static vV = { visibility: 'visible' };
 }
 export class Auth {
 	static ID = async () => await H.d(location.origin + '/ID/' + SALT, 10);
@@ -2943,7 +2945,8 @@ export class Auth {
 	static v = Vw.ce('video');
 	static Types = ['SHA-1', 'SHA-256', 'SHA-384', 'SHA-512'];
 	static async build() {
-		const id = await Auth.ID();
+		const A = Auth;
+		const id = await A.ID();
 		if (Vw.gi(id)) return;
 		const body = Vw.gB(),
 			frame = Vw.div(
@@ -2952,17 +2955,27 @@ export class Auth {
 				{
 					backgroundColor: '#ccc',
 					position: C.a,
-					minWidth: '300px',
+					minWidth: '380px',
 					maxWidth: '95vw',
 					minHeight: '10px',
 					maxHeight: '95vh',
 					top: '10px',
 					left: '10px',
+					overflowY: 'scroll',
+					overflowX: 'hidden',
 				}
 			),
 			rowSty = { margin: '10px', display: 'flex', justifyContent: 'space-between' },
 			title = Vw.div(frame, {}, rowSty),
-			inner = Vw.div(frame, {}, { margin: '10px', borderRadius: '5px', border: '5px #aaa dotted' }),
+			inner = Vw.div(
+				frame,
+				{},
+				{
+					margin: '10px',
+					borderRadius: '5px',
+					border: '5px #aaa dotted',
+				}
+			),
 			ttx = Vw.div(title, { text: 'TOTP Authenticator' }),
 			cBtn = Vw.div(title, { text: '×' }, { margin: '2px', cursor: 'pointer' }),
 			list = Vw.div(
@@ -2987,62 +3000,77 @@ export class Auth {
 			qc = Vw.div(r0, { text: 'QRCode' }, { fontSize: '80%', fontWeight: 'bold' }),
 			qElm = Vw.ipt(r0, { type: 'file' }),
 			qBtn = Vw.btn(r0, { text: 'scan' }),
-			r01 = Vw.div(input, {}, rowSty),
-			r02 = Vw.div(input, {}, Vw.uO(rowSty, { fontSize: '40%', wordBreak: 'break-all', maxWidth: '300px' })),
+			r01 = Vw.div(
+				input,
+				{ class: 'r01' },
+				{ overflowX: 'scroll', overflowY: 'scroll', maxWidth: '380px', maxHeight: '380px' }
+			),
+			r02 = Vw.div(
+				input,
+				{ class: 'r02' },
+				Vw.uO(rowSty, { fontSize: '40%', wordBreak: 'break-all', maxWidth: '300px' })
+			),
 			r1 = Vw.div(input, {}, rowSty),
 			nt = Vw.div(r1, { text: 'Name' }),
-			nElm = Vw.ipt(r1, { size: '20' }),
+			nElm = Vw.ipt(r1, { size: '20' }, { width: '20em' }),
 			r3 = Vw.div(input, {}, rowSty),
 			st = Vw.div(r3, { text: 'Secret' }),
-			sElm = Vw.ipt(r3, { size: '30' }, { fontSize: '50%' }),
+			sElm = Vw.ipt(r3, { size: '30' }, { fontSize: '50%', width: '20em' }),
 			r4 = Vw.div(input, {}, rowSty),
 			pt = Vw.div(r4, { text: 'Period' }),
-			pElm = Vw.ipt(r4, { type: 'Number', value: 30 }),
+			pElm = Vw.ipt(r4, { type: 'Number', value: 30 }, { width: '20em' }),
 			r5 = Vw.div(input, {}, rowSty),
 			tt = Vw.div(r5, { text: 'Type' }),
-			select = Vw.add(r5, 'select', { text: 'type' }),
+			select = Vw.add(r5, 'select', { text: 'type' }, { width: '20em' }),
 			r6 = Vw.div(input, {}, rowSty),
 			dn = Vw.div(r6, { text: 'Digits' }),
-			dElm = Vw.ipt(r6, { type: 'Number', value: 6 }),
+			dElm = Vw.ipt(r6, { type: 'Number', value: 6 }, { width: '20em' }),
 			r7 = Vw.div(
 				input,
 				{},
 				Vw.uO(rowSty, {
 					fontSize: '150%',
-					backgroundColor: '#ddd',
 					fontWeight: 'bold',
 					justifyContent: 'center',
 					letterSpacing: '.2rem',
 				})
 			),
-			cElm = Vw.div(r7, {}),
+			cP = Vw.div(r7, {}, { display: 'flex', flexDirection: 'column', overflow: 'hidden', width: '10em' }),
+			cElm = Vw.div(cP, {}, { width: '10em', backgroundColor: '#ddd', textAlign: 'center' }),
+			i = Vw.div(
+				cP,
+				{},
+				Vw.uO(C.vH, {
+					position: 'relative',
+					left: '-10em',
+					width: '20em',
+					height: '5px',
+					background: C.bi,
+				})
+			),
 			r8 = Vw.div(input, {}, rowSty),
 			aBtn = Vw.btn(r8, { text: 'Auth' }),
 			sBtn = Vw.btn(r8, { text: 'Save' });
-		Auth.c = Vw.add(frame, 'canvas', {}, { width: '98%', display: 'none' });
-		for (const type of Auth.Types) Vw.add(select, 'option', { text: type, value: type });
-		select.value = Auth.Types[0];
-		Vw.click(cBtn, Auth.close(frame));
-		Vw.click(Auth.c, () => Vw.sS(Auth.c, C.dNone));
+		A.c = Vw.add(frame, 'canvas', {}, { width: '98%', display: 'none' });
+		for (const type of A.Types) Vw.add(select, 'option', { text: type, value: type });
+		select.value = A.Types[0];
+		Vw.click(cBtn, A.close(frame));
+		Vw.click(A.c, () => Vw.sS(A.c, C.dNone));
 		Vw.click(title, () => Vw.tS(inner, 'display', 'none', 'block'));
 		Vw.click(bar, () => Vw.tS(input, 'display', 'none', 'block'));
-		Auth.E = { t: select, n: nElm, s: sElm, p: pElm, d: dElm, l: list };
-		Vw.click(aBtn, async () => {
-			cElm.textContent = await Auth.verify();
-		});
-		Vw.click(aBtn, async () => {
-			cElm.textContent = await Auth.verify();
-		});
-		Vw.click(qBtn, Auth.sc(r01, r02));
-		Vw.click(sBtn, Auth.save);
-		Vw.change(qElm, Auth.getScanimgF(qElm, r01, r02));
-		Auth.buildList();
+		A.E = { t: select, n: nElm, s: sElm, p: pElm, d: dElm, l: list };
+		Vw.click(aBtn, A.verify(i, cElm));
+		Vw.click(qBtn, A.sc(r01, r02));
+		Vw.click(sBtn, A.save);
+		Vw.change(qElm, A.getScanimgF(qElm, r01, r02));
+		A.buildList();
 		Vw.beDraggable(frame);
 	}
 	static close = (f) => () => Vw.rm(f);
 	static async buildList() {
-		const e = await Auth.ld(),
-			l = Auth.E.l;
+		const A = Auth,
+			e = await A.ld(),
+			l = A.E.l;
 		Vw.rc(l);
 		for (const k in e.v) {
 			const f = Vw.div(l, {}, {}),
@@ -3073,8 +3101,17 @@ export class Auth {
 					}
 				),
 				t = Vw.div(r, { text: k }, { padding: '5px', fontSize: '80%', fontWeight: 'bold', lineHeight: '2em' }),
-				w = Vw.div(
+				o = Vw.div(
 					r,
+					{},
+					{
+						minWidth: '9em',
+						maxWidth: '9em',
+						display: 'flex',
+					}
+				),
+				w = Vw.div(
+					o,
 					{},
 					{
 						padding: '0',
@@ -3099,44 +3136,44 @@ export class Auth {
 				b = Vw.div(
 					w,
 					{},
-					{
+					Vw.uO(C.vH, {
 						position: 'relative',
 						left: '-4em',
 						minWidth: '8em',
 						minHeight: '5px',
-						visibility: 'hidden',
 						background: C.bi,
-					}
+					})
 				),
-				rBtn = Vw.btn(r, { text: 'del' }),
-				eBtn = Vw.btn(r, { text: 'export' }),
+				rBtn = Vw.btn(o, { text: 'del' }),
+				eBtn = Vw.btn(o, { text: 'export' }),
 				d = e.v[k];
 			Vw.click(t, async () => {
 				const t = st(() => {
-					Vw.sS(b, { visibility: 'hidden' });
+					Vw.sS(b, C.vH);
 					s.textContent = ' ';
-				}, Auth.d);
-				ct(Auth.Q[d.name]);
-				Auth.Q[d.name] = t;
-				s.textContent = await Auth.vy(d.secret, d.period, d.digits, d.type);
-				b.animate(Auth.as, Auth.at);
-				Vw.sS(b, { visibility: 'visible' });
+				}, A.d);
+				ct(A.Q[d.name]);
+				A.Q[d.name] = t;
+				s.textContent = await A.vy(d.secret, d.period, d.digits, d.type);
+				b.animate(A.as, A.at);
+				Vw.sS(b, C.vV);
 			});
 			Vw.click(rBtn, async () => {
 				if (!confirm('Is delete complitly OK?')) return;
-				await Auth.rm(k);
+				await A.rm(k);
 				Vw.rm(r);
 			});
-			Vw.click(eBtn, async () => (!confirm('Is show secret OK?') ? '' : await Auth.gExprtF(q, i, qr, d)()));
+			Vw.click(eBtn, async () => (!confirm('Is show secret OK?') ? '' : await A.gExprtF(q, i, qr, d)()));
 		}
 	}
 	static gExprtF =
 		(q, a, p, d, h = 256) =>
 		async () => {
-			const n = d.name.split(':'),
+			const A = Auth,
+				n = d.name.split(':'),
 				userId = n.pop(),
 				issuer = n.pop();
-			let s = Auth.mkOtpURI(issuer, userId, d.secret, d.period, d.type, d.digits),
+			let s = A.mkOtpURI(issuer, userId, d.secret, d.period, d.type, d.digits),
 				i = false;
 			while (!i) {
 				try {
@@ -3144,7 +3181,7 @@ export class Auth {
 					Vw.rc(q);
 					new CanvasQRC(q, s, h, h);
 					const iE = Vw.gT(q, 'img'),
-						p = await Auth.gSF(iE.src);
+						p = await A.gSF(iE.src);
 					i = p !== null;
 				} catch (e) {
 					ef(e);
@@ -3154,13 +3191,13 @@ export class Auth {
 			Vw.rc(q);
 			new CanvasQRC(q, s, h, h);
 			Vw.sS(p, C.dBlock);
-			a.animate(Auth.as, Auth.at);
+			a.animate(A.as, A.at);
 			const t = st(() => {
 				Vw.sS(p, C.dNone);
 				Vw.rc(q);
-			}, Auth.d);
-			ct(Auth.T[d.name]);
-			Auth.T[d.name] = t;
+			}, A.d);
+			ct(A.T[d.name]);
+			A.T[d.name] = t;
 		};
 	static mkOtpURI = (issuer, userId, secret, period, type, digits) =>
 		'otpauth:/' +
@@ -3168,10 +3205,17 @@ export class Auth {
 			.split('-')
 			.join('')}&digits=${digits}&period=${period}`;
 	static getScanimgF = (qElm, r01, r02) => async () => {
+		const A = Auth;
 		Vw.rc(r01);
+		A.E.t.value = A.Types[0];
+		A.E.n.value = '';
+		A.E.s.value = '';
+		A.E.p.value = 30;
+		A.E.d.value = 6;
+		A.state.vyStart = 0;
 		const dURI = await Vw.fr(qElm.files[0]).asDataURL(),
-			p = await Auth.gSF(dURI, Vw.add(r01, 'canvas'));
-		if (p && p.data) r02.textContent = Auth.decode(p.data);
+			p = await A.gSF(dURI, Vw.add(r01, 'canvas'));
+		if (p && p.data) r02.textContent = A.decode(p.data);
 	};
 	static decode(otpURI) {
 		io('otpURI:' + otpURI);
@@ -3218,9 +3262,38 @@ export class Auth {
 		io('★gSF p' + p, await H.d(dURI), dURI, p);
 		return p;
 	};
-	static verify = async () => {
-		const e = Auth.E;
-		return Auth.validate() ? await Auth.vy(e.s.value, e.p.value, e.d.value, e.t.value) : '';
+	static idg = {};
+	static verify = (i, c) => async () => {
+		const e = Auth.E,
+			s = now();
+		Auth.state.vyStart = s;
+		if (Auth.validate()) {
+			Vw.sS(i, C.vV);
+			let o = '';
+			c.textContent = o;
+			while (Auth.validate()) {
+				if (Auth.state.vyStart !== s) break;
+				const p = e.p.value;
+				while (o === c.textContent) {
+					await slp(100);
+					if (Auth.state.vyStart !== s) break;
+					o = await Auth.vy(e.s.value, p, e.d.value, e.t.value);
+				}
+				if (Auth.state.vyStart !== s) break;
+				const n = now(),
+					l = n - Totp.getT(n, 0, p) * p * 1000,
+					m = Math.floor(l / 10 / p),
+					d = p * 1000 - l;
+				c.textContent = o;
+				io('n:' + n + '/l:' + l + '/m:' + m + '/p:' + p + '/o:' + o + '/d:' + d);
+				i.animate({ transform: ['scaleX(' + m + '%) ', 'scaleX(100%)'] }, { duration: d, iterations: 1 });
+				await slp(d);
+			}
+		}
+		if (Auth.state.vyStart === 0) {
+			c.textContent = '';
+			Vw.sS(i, C.vH);
+		}
 	};
 	static vy = async (s, p, d, t) => await Totp.getOtp(Y.b32d(s), 0, p * 1, d * 1, t);
 	static validate = () => Auth.E.n.value && Auth.E.s.value && Auth.E.p.value && Auth.E.d.value;
@@ -3290,11 +3363,12 @@ export class Auth {
 		x.stroke();
 	}
 	static dwB(c, code) {
-		const l = code.location;
-		Auth.dwL(c, l.topLeftCorner, l.topRightCorner);
-		Auth.dwL(c, l.topRightCorner, l.bottomRightCorner);
-		Auth.dwL(c, l.bottomRightCorner, l.bottomLeftCorner);
-		Auth.dwL(c, l.bottomLeftCorner, l.topLeftCorner);
+		const l = code.location,
+			A = Auth;
+		A.dwL(c, l.topLeftCorner, l.topRightCorner);
+		A.dwL(c, l.topRightCorner, l.bottomRightCorner);
+		A.dwL(c, l.bottomRightCorner, l.bottomLeftCorner);
+		A.dwL(c, l.bottomLeftCorner, l.topLeftCorner);
 	}
 	static tick(r01, r02, m) {
 		return async () => {
@@ -3311,17 +3385,17 @@ export class Auth {
 				c.width = v.videoWidth;
 				x.drawImage(v, 0, 0, c.width, c.height);
 				const id = x.getImageData(0, 0, c.width, c.height),
-					code = jsQR(id.data, id.width, id.height, {
+					cd = jsQR(id.data, id.width, id.height, {
 						inversionAttempts: 'dontInvert',
 					});
-				io('A code', code);
-				if (code) {
+				io('A code', cd);
+				if (cd) {
 					m.a = 1000;
 					Vw.rc(r01);
 					const dURI = c.toDataURL(),
 						c2 = Vw.add(r01, 'canvas'),
 						p = await Auth.gSF(dURI, c2);
-					Auth.dwB(c, code);
+					Auth.dwB(c, cd);
 					Auth.dwB(c2, p);
 					Vw.sS(Auth.c, C.dNone);
 					if (p && p.data) r02.textContent = Auth.decode(p.data);
