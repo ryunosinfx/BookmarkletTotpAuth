@@ -555,7 +555,7 @@ class DD {
 		try {
 			t += decodeURIComponent(a);
 		} catch (e) {
-			console.log('decodeByte e:', e, b, a, m, z);
+			err('decodeByte e:', e, b, a, m, z);
 		}
 		return { b, t };
 	}
@@ -1068,7 +1068,7 @@ class LC {
 				o = (M.pow(h.a - n, 2) + M.pow(i.a - n, 2) + M.pow(j.a - n, 2) + M.pow(k.a - n, 2)) / n;
 			return l + o;
 		} catch (e) {
-			console.log('scorePattern', e);
+			io('scorePattern', e);
 			return Infinity;
 		}
 	}
@@ -2690,7 +2690,7 @@ export class Totp {
 	static getT = (t = now(), T = Totp.T0, X = Totp.X) => Math.floor((t - T * 1000) / (X * 1000));
 	static P = [1, 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000];
 	static async generate(keyHex, time, codeDigits, hmacAlgo) {
-		console.log({ keyHex, time, codeDigits, hmacAlgo });
+		io({ keyHex, time, codeDigits, hmacAlgo });
 		while (time.length < 16) time = '0' + time;
 		const h = B.u8(
 				await H.hmac(
@@ -2867,7 +2867,7 @@ export class Vw {
 		return c;
 	};
 	static fr = (f) => {
-		console.log(f);
+		io(f);
 		const r = new FileReader(),
 			p = pr((rv, rj) => {
 				r.onload = () => rv(r.result);
@@ -3045,7 +3045,6 @@ export class Auth {
 			l = Auth.E.l;
 		Vw.rc(l);
 		for (const k in e.v) {
-			// console.log('buildList k:' + k, e);
 			const f = Vw.div(l, {}, {}),
 				r = Vw.div(
 					f,
@@ -3211,7 +3210,7 @@ export class Auth {
 		x.drawImage(i, o, o);
 		const d = x.getImageData(0, 0, z, y),
 			p = await jsQR(d.data, z, y);
-		console.log('★gSF p' + p, await H.d(dURI), dURI, p);
+		io('★gSF p' + p, await H.d(dURI), dURI, p);
 		return p;
 	};
 	static verify = async () => {
@@ -3328,7 +3327,6 @@ export class Auth {
 	}
 }
 const a = function () {
-	// alert('');
 	Auth.build();
 };
 //a();
