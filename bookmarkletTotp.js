@@ -2690,7 +2690,7 @@ export class Totp {
 	static getT = (t = now(), T = Totp.T0, X = Totp.X) => Math.floor((t - T * 1000) / (X * 1000));
 	static P = [1, 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000];
 	static async generate(keyHex, time, codeDigits, hmacAlgo) {
-		io({ keyHex, time, codeDigits, hmacAlgo });
+		// io({ keyHex, time, codeDigits, hmacAlgo });
 		while (time.length < 16) time = '0' + time;
 		const h = B.u8(
 				await H.hmac(
@@ -2867,7 +2867,7 @@ export class Vw {
 		return c;
 	};
 	static fr = (f) => {
-		io(f);
+		// io(f);
 		const r = new FileReader(),
 			p = pr((rv, rj) => {
 				r.onload = () => rv(r.result);
@@ -3218,7 +3218,7 @@ export class Auth {
 		if (p && p.data) r02.textContent = A.decode(p.data);
 	};
 	static decode(otpURI) {
-		io('otpURI:' + otpURI);
+		// io('otpURI:' + otpURI);
 		if (otpURI.indexOf('otpauth') !== 0) return otpURI;
 		const a = otpURI.split('?'),
 			b = a ? a[0].split('/').pop() : a,
@@ -3259,7 +3259,7 @@ export class Auth {
 		x.drawImage(i, o, o);
 		const d = x.getImageData(0, 0, z, y),
 			p = await jsQR(d.data, z, y);
-		io('★gSF p' + p, await H.d(dURI), dURI, p);
+		// io('★gSF p' + p, await H.d(dURI), dURI, p);
 		return p;
 	};
 	static idg = {};
@@ -3285,7 +3285,7 @@ export class Auth {
 					m = Math.floor(l / 10 / p),
 					d = p * 1000 - l;
 				c.textContent = o;
-				io('n:' + n + '/l:' + l + '/m:' + m + '/p:' + p + '/o:' + o + '/d:' + d);
+				// io('n:' + n + '/l:' + l + '/m:' + m + '/p:' + p + '/o:' + o + '/d:' + d);
 				i.animate({ transform: ['scaleX(' + m + '%) ', 'scaleX(100%)'] }, { duration: d, iterations: 1 });
 				await slp(d);
 			}
@@ -3312,10 +3312,10 @@ export class Auth {
 	static rm = async (n) => await Auth.sd({ name: n, isRm: 1 });
 	static sd = async (d) => {
 		const e = await Auth.ld();
-		io('A save k:' + e.k, a);
+		// io('A save k:' + e.k, a);
 		if (d.isRm) delete e.v[d.name];
 		else e.v[d.name] = d;
-		io('B save k:' + e.k);
+		// io('B save k:' + e.k);
 		await L.save(e.k, e.v);
 	};
 	static ld = async () => {
@@ -3325,7 +3325,7 @@ export class Auth {
 	};
 	static load = async (n) => {
 		const e = await Auth.ld();
-		io('load k:' + e.k, a);
+		// io('load k:' + e.k, a);
 		return e.v[n];
 	};
 	static sc = (r01, r02) => async () => {
@@ -3375,9 +3375,9 @@ export class Auth {
 			if (m.a > 100) return;
 			const v = Auth.v,
 				vT = v.srcObject.getVideoTracks()[0];
-			io('Track settings:', JSON.stringify(vT.getSettings(), null, 2));
-			io('Track constraints:', JSON.stringify(vT.getConstraints(), null, 2));
-			io('A v.readyState :' + v.readyState);
+			// io('Track settings:', JSON.stringify(vT.getSettings(), null, 2));
+			// io('Track constraints:', JSON.stringify(vT.getConstraints(), null, 2));
+			// io('A v.readyState :' + v.readyState);
 			if (v.readyState === v.HAVE_ENOUGH_DATA) {
 				const c = Auth.c,
 					x = c.getContext('2d');
