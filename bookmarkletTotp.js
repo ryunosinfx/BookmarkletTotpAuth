@@ -3174,6 +3174,7 @@ export class Auth {
 		if (p && p.data) r02.textContent = Auth.decode(p.data);
 	};
 	static decode(otpURI) {
+		io('otpURI:' + otpURI);
 		if (otpURI.indexOf('otpauth') !== 0) return otpURI;
 		const a = otpURI.split('?'),
 			b = a ? a[0].split('/').pop() : a,
@@ -3189,9 +3190,13 @@ export class Auth {
 		}
 		e.n.value = decodeURI(c[0]) + ':' + decodeURI(c[1]);
 		e.s.value = m.secret;
-		e.d.value = m.digits;
-		e.p.value = m.period;
-		e.t.value = m.algorithm.indexOf('-') > 0 ? m.algorithm : m.algorithm.toUpperCase().split('SHA').join('SHA-');
+		e.d.value = m.digits ? m.digits : 6;
+		e.p.value = m.period ? m.period : 30;
+		e.t.value = m.algorithm
+			? m.algorithm.indexOf('-') > 0
+				? m.algorithm
+				: m.algorithm.toUpperCase().split('SHA').join('SHA-')
+			: Auth.Types[0];
 		return otpURI;
 	}
 	static gSF = async (dURI, c = I.c()) => {
