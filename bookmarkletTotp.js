@@ -1328,10 +1328,10 @@ export const jsQR = JsQR.exec;
 class QR8 {
 	//QR8bitByte
 	constructor(d) {
-		const z = this;
+		const z = this,
+			pD = []; // Added to support UTF-8 Characters
 		z.mode = QRMode.M_8;
 		z.data = d;
-		const pD = []; // Added to support UTF-8 Characters
 		for (let i = 0, l = d.length; i < l; i++) {
 			const b = [],
 				c = d.charCodeAt(i);
@@ -1896,25 +1896,25 @@ class QRRSB {
 		return rsBs;
 	}
 	static gRsBT(tN, eCL) {
-		const bECL = (tN - 1) * 4; //getRsBlockTable
+		const b = (tN - 1) * 4; //getRsBlockTable
 		const Q = QRECL;
-		const T = QRRSB.RS_BLOCK_T;
+		const T = QRRSB.T;
 		switch (eCL) {
 			case Q.L:
-				return T[bECL + 0];
+				return T[b + 0];
 			case Q.M:
-				return T[bECL + 1];
+				return T[b + 1];
 			case Q.Q:
-				return T[bECL + 2];
+				return T[b + 2];
 			case Q.H:
-				return T[bECL + 3];
+				return T[b + 3];
 			default:
 				return void 0;
 		}
 	}
 }
-QRRSB.RS_BLOCK_T = [
-	[1, 26, 19],
+QRRSB.T = [
+	[1, 26, 19], //RS_BLOCK_T
 	[1, 26, 16],
 	[1, 26, 13],
 	[1, 26, 9],
@@ -2075,7 +2075,7 @@ QRRSB.RS_BLOCK_T = [
 	[34, 54, 24, 34, 55, 25],
 	[20, 45, 15, 61, 46, 16],
 ];
-const QRCodeLimitLength = [
+const QRCLL = [
 	[17, 14, 11, 7],
 	[32, 26, 20, 14],
 	[53, 42, 32, 24],
@@ -2133,9 +2133,10 @@ class QRBB {
 		return this.length; //getLengthInBits
 	}
 	pB(bit) {
-		const bufI = Math.floor(this.length / 8);
-		if (this.buffer.length <= bufI) this.buffer.push(0);
-		if (bit) this.buffer[bufI] |= 0x80 >>> this.length % 8;
+		const bufI = Math.floor(this.length / 8),
+			b = this.buffer;
+		if (b.length <= bufI) b.push(0);
+		if (bit) b[bufI] |= 0x80 >>> this.length % 8;
 		this.length++;
 	}
 }
@@ -2146,29 +2147,29 @@ class SvgDw {
 	}
 	dw(qrCD) {
 		const z = this,
-			opt = z.opt,
-			elm = z.elm,
+			o = z.opt,
+			e = z.elm,
 			nC = qrCD.gMC();
-		elm.style.width = opt.width + 'px';
-		elm.style.height = opt.height + 'px';
+		e.style.width = o.width + 'px';
+		e.style.height = o.height + 'px';
 		z.cl();
-		const attrs = {
+		const a = {
 			viewBox: '0 0 ' + nC + ' ' + nC,
 			width: '100%',
 			height: '100%',
-			fill: opt.colorLight,
+			fill: o.colorLight,
 		};
-		const svg = z.makeSVG('svg', attrs);
-		svg.setAttributeNS('http://www.w3.org/2000/xmlns/', 'xmlns:xlink', 'http://www.w3.org/1999/xlink');
-		elm.appendChild(svg);
-		svg.appendChild(z.makeSVG('rect', { fill: opt.colorLight, width: '100%', height: '100%' }));
-		svg.appendChild(z.makeSVG('rect', { fill: opt.colorDark, width: '1', height: '1', id: 'template' }));
+		const s = z.makeSVG('svg', a);
+		s.setAttributeNS('http://www.w3.org/2000/xmlns/', 'xmlns:xlink', 'http://www.w3.org/1999/xlink');
+		e.appendChild(s);
+		s.appendChild(z.makeSVG('rect', { fill: o.colorLight, width: '100%', height: '100%' }));
+		s.appendChild(z.makeSVG('rect', { fill: o.colorDark, width: '1', height: '1', id: 'template' }));
 		for (let rI = 0; rI < nC; rI++)
 			for (let cI = 0; cI < nC; cI++)
 				if (qrCD.isD(rI, cI)) {
 					const c = z.makeSVG('use', { x: cI + N, y: rI + N });
 					c.setAttributeNS('http://www.w3.org/1999/xlink', 'href', '#template');
-					svg.appendChild(c);
+					s.appendChild(c);
 				}
 	}
 	makeSVG(t, a) {
@@ -2191,11 +2192,11 @@ class HtmlDw {
 	 * @param {QRC} qrCD
 	 */
 	dw(qrCD) {
-		const opt = this.opt,
-			elm = this.elm,
+		const o = this.opt,
+			e = this.elm,
 			nC = qrCD.gMC(),
-			nW = Math.floor(opt.width / nC),
-			nH = Math.floor(opt.height / nC),
+			nW = Math.floor(o.width / nC),
+			nH = Math.floor(o.height / nC),
 			tE = Vw.ce('table'),
 			s = tE.style;
 		s.borderWidth = 0;
@@ -2203,7 +2204,7 @@ class HtmlDw {
 		for (let r = 0; r < nC; r++) {
 			const trE = Vw.ce('tr');
 			for (let c = 0; c < nC; c++) {
-				const color = qrCD.isD(r, c) ? opt.colorDark : opt.colorLight,
+				const color = qrCD.isD(r, c) ? o.colorDark : o.colorLight,
 					tE = Vw.ce('td');
 				s.borderWidth = 0;
 				s.borderCollapse = 'collapse';
@@ -2216,10 +2217,10 @@ class HtmlDw {
 			}
 			tE.append(trE);
 		}
-		elm.append(tE);
-		const elT = elm.childNodes[0], // Fix the margin values as real size.
-			nLMT = (opt.width - elT.offsetWidth) / 2,
-			nTMT = (opt.height - elT.offsetHeight) / 2;
+		e.append(tE);
+		const elT = e.childNodes[0], // Fix the margin values as real size.
+			nLMT = (o.width - elT.offsetWidth) / 2,
+			nTMT = (o.height - elT.offsetHeight) / 2;
 		if (nLMT > 0 && nTMT > 0) elT.style.margin = nTMT + 'px ' + nLMT + 'px';
 	}
 	/**
@@ -2238,20 +2239,22 @@ class CanvasDw {
 	 * @param {Object} opt QRCode Options
 	 */
 	constructor(elm, opt) {
-		const z = this;
+		const z = this,
+			c = I.c(),
+			i = Vw.ce('img');
 		z.opt = opt;
-		z.cElm = I.c();
-		z.cElm.width = opt.width;
-		z.cElm.height = opt.height;
-		z.cElm.style.position = C.a;
-		z.cElm.style.top = opt.height * -1;
-		elm.appendChild(z.cElm);
+		z.cElm = c;
+		c.width = opt.width;
+		c.height = opt.height;
+		c.style.position = C.a;
+		c.style.top = opt.height * -1;
+		elm.appendChild(c);
 		z.elm = elm;
-		z.ctx = I.x(z.cElm);
-		z.iElm = Vw.ce('img');
-		z.iElm.alt = 'Scan me!';
-		z.iElm.style.display = 'none';
-		z.elm.appendChild(this.iElm);
+		z.ctx = I.x(c);
+		z.iElm = i;
+		i.alt = 'Scan me!';
+		i.style.display = 'none';
+		z.elm.appendChild(z.iElm);
 	}
 	/**
 	 * Draw the QRCode
@@ -2260,26 +2263,26 @@ class CanvasDw {
 	 */
 	dw(qrCD) {
 		const z = this,
-			opt = z.opt;
-		z.cElm.width = opt.width;
-		z.cElm.height = opt.height;
-		const imgE = z.iElm,
+			o = z.opt;
+		z.cElm.width = o.width;
+		z.cElm.height = o.height;
+		const i = z.iElm,
 			x = z.ctx,
 			nC = qrCD.gMC(),
-			nW = opt.width / nC,
-			nH = opt.height / nC,
+			nW = o.width / nC,
+			nH = o.height / nC,
 			nHW = Math.round(nW),
 			nRH = Math.round(nH);
-		imgE.style.display = 'none';
+		i.style.display = 'none';
 		z.cl();
 		for (let rI = 0; rI < nC; rI++) {
 			for (let cI = 0; cI < nC; cI++) {
-				const isDark = qrCD.isD(rI, cI),
+				const iD = qrCD.isD(rI, cI),
 					nL = cI * nW,
 					nT = rI * nH;
-				x.strokeStyle = isDark ? opt.colorDark : opt.colorLight;
+				x.strokeStyle = iD ? o.colorDark : o.colorLight;
 				x.lineWidth = 1;
-				x.fillStyle = isDark ? opt.colorDark : opt.colorLight;
+				x.fillStyle = iD ? o.colorDark : o.colorLight;
 				x.fillRect(nL, nT, nW, nH);
 				x.strokeRect(Math.floor(nL) + 0.5, Math.floor(nT) + 0.5, nHW, nRH);
 				x.strokeRect(Math.ceil(nL) - 0.5, Math.ceil(nT) - 0.5, nHW, nRH);
@@ -2368,11 +2371,11 @@ export class QRC {
 	 */
 	gTN(s, nCL) {
 		let nT = 1; //_getTypeNumber
-		const l = QRCodeLimitLength.length,
+		const l = QRCLL.length,
 			lu = this.gUTF8L(s);
 		for (let i = 0; i <= l; i++) {
 			let nL = 0;
-			const lL = QRCodeLimitLength[i],
+			const lL = QRCLL[i],
 				Q = QRECL;
 			switch (nCL) {
 				case Q.L:
@@ -2433,13 +2436,14 @@ export class QRC {
 	 * @param {QRErrorCorrectLevel} [vOption.correctLevel=QRErrorCorrectLevel.H] [L|M|Q|H]
 	 */
 	setCL(cL = QRECL.H) {
-		const Q = QRECL; //setCorrectLevel
+		const Q = QRECL,
+			o = this.opt; //setCorrectLevel
 		if (typeof cL === 'string') {
-			if (cL === 'H') this.opt.correctLevel = Q.H;
-			else if (cL === 'Q') this.opt.correctLevel = Q.Q;
-			else if (cL === 'M') this.opt.correctLevel = Q.M;
-			else if (cL === 'L') this.opt.correctLevel = Q.L;
-		} else this.opt.correctLevel = cL;
+			if (cL === 'H') o.correctLevel = Q.H;
+			else if (cL === 'Q') o.correctLevel = Q.Q;
+			else if (cL === 'M') o.correctLevel = Q.M;
+			else if (cL === 'L') o.correctLevel = Q.L;
+		} else o.correctLevel = cL;
 	}
 	/**
 	 * Clear the QRCode
@@ -2498,7 +2502,7 @@ export class H {
 		return isAB ? r : Y.a2U(r);
 	}
 	static async hmac(secretU, msgU, algo = 'SHA-512') {
-		const key = await window.crypto.subtle.importKey(
+		const key = await cy.importKey(
 			'raw',
 			secretU,
 			{
@@ -2508,7 +2512,7 @@ export class H {
 			false,
 			['sign', 'verify']
 		);
-		return await window.crypto.subtle.sign('HMAC', key, msgU);
+		return await cy.sign('HMAC', key, msgU);
 	}
 }
 export class B {
@@ -2783,9 +2787,6 @@ export class I {
 		for (let j = 0, k = 0; k < b; j++) if (j % 4 !== 3) u[k++] = n[j];
 		return u;
 	};
-	static svg2pn() {
-		const sD = new XMLSerializer().serializeToString(svg);
-	}
 	static il = (dURI) =>
 		pr((r) => {
 			const i = I.i();
@@ -2794,14 +2795,15 @@ export class I {
 		});
 }
 class L {
+	static l = localStorage;
 	static k = async (k) => await H.d(k, 100);
 	static save = async (k, v) =>
 		!v || isN(v)
-			? localStorage.setItem(await L.k(k), v)
-			: localStorage.setItem(await L.k(k), await I.compess(Y.s2u(await Cy.enc(Js(v)))));
+			? L.l.setItem(await L.k(k), v)
+			: L.l.setItem(await L.k(k), await I.compess(Y.s2u(await Cy.enc(Js(v)))));
 
 	static async load(k) {
-		const d = localStorage.getItem(await L.k(k));
+		const d = L.l.getItem(await L.k(k));
 		return !d || isN(d) ? d : Jp(await Cy.dec(Y.u2s(await I.decompress(d))));
 	}
 }
