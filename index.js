@@ -20,7 +20,6 @@ const HTTPS_REGXP = /https:\/\//g;
 const A = 'ACCESS_POINT';
 const Q = 'QUERY';
 export class BookmarkletBuilder {
-	image;
 	static build(src) {
 		const rows = src
 			.split('\t')
@@ -55,7 +54,7 @@ export class BookmarkletBuilder {
 				.join(k + k);
 		}
 		console.log(l);
-		return `javascript:(()=>{${l};a()})()`;
+		return `javascript:let a=(()=>{${l};a()});a()`;
 	}
 	static async getBookmarklet(jsPath, q, d = '/') {
 		const c = location.protocol + '//' + location.host + d;
@@ -192,6 +191,35 @@ export class Test {
 		// console.log('OK:', OK);
 		// console.log('NG:', NG);
 		// Vw.rc(x);
+		const SALT =
+			'メロスは激怒した。必ず、かの邪智暴虐じゃちぼうぎゃくの王を除かなければならぬと決意した。メロスには政治がわからぬ。メロスは、村の牧人である。笛を吹き、羊と遊んで暮して来た。けれども邪悪に対しては、人一倍に敏感であった。';
+		console.log(Y.s2u(SALT));
+		const af = Vw.div(f, {}, { fontSize: '80%', backgroundColor: '#ddd', padding: '1em', marginTop: '1em' });
+		const a0 = Vw.div(af, { text: 'Generat SALT as URL for bookmarklet' }, rowSty);
+		const a1 = Vw.div(af, {}, rowSty);
+		const k = Vw.div(a1, { text: 'SALT preEncoding:' }, rowSty);
+		const v = Vw.div(a1, {}, rowSty);
+		const i = Vw.add(v, 'textarea', { text: SALT }, { width: '75vw' });
+		const a2 = Vw.div(af, {}, rowSty);
+		const t2 = Vw.div(a2, { text: 'SALT postEncoding: base64URI' }, rowSty);
+		const r2 = Vw.div(a2, { text: Y.s2U(SALT) }, { fontSize: '50%', wordBreak: 'break-all' });
+		const a3 = Vw.div(af, {}, rowSty);
+		const r2a = Vw.div(a3, { text: 'length:' + Y.s2U(SALT).length }, { fontSize: '50%', wordBreak: 'break-all' });
+		const a4 = Vw.div(af, {}, rowSty);
+		const t3 = Vw.div(a4, { text: 'SALT encodeURI(SALT):' }, rowSty);
+		const rA = Vw.div(a4, { text: encodeURI(SALT) }, { fontSize: '50%', wordBreak: 'break-all' });
+		const a5 = Vw.div(af, {}, rowSty);
+		const rA2 = Vw.div(
+			a5,
+			{ text: 'length:' + encodeURI(SALT).length },
+			{ fontSize: '50%', wordBreak: 'break-all' }
+		);
+		Vw.input(i, () => {
+			Vw.sT(r2, Y.s2U(i.valeu));
+			Vw.sT(r2a, 'length:' + Y.s2U(SALT).length);
+			Vw.sT(rA, encodeURI(SALT));
+			Vw.sT(rA2, 'length:' + encodeURI(SALT).length);
+		});
 	};
 	static mkQR = async (uElm, sElm, pElm, select, dElm, cElm, w, h) => {
 		let text = Test.getMkOtpURIFunc(uElm, sElm, pElm, select, dElm)();

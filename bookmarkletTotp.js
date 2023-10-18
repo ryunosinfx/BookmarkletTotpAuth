@@ -1,14 +1,12 @@
 const te = new TextEncoder('utf-8'),
 	td = new TextDecoder('utf-8'),
-	SlpMs = 100;
-const rnd = (a = 1) => Math.random() * a;
-const NullArr = [null];
-const cType = 'application/x-www-form-urlencoded';
-const J = JSON,
+	SlpMs = 100,
+	rnd = (a = 1) => Math.random() * a,
+	J = JSON,
 	Jp = (a) => J.parse(a),
 	Js = (a) => J.stringify(a),
 	SALT =
-		'メロスは激怒した。必ず、かの邪智暴虐じゃちぼうぎゃくの王を除かなければならぬと決意した。メロスには政治がわからぬ。メロスは、村の牧人である。笛を吹き、羊と遊んで暮して来た。けれども邪悪に対しては、人一倍に敏感であった。',
+		'44Oh44Ot44K544Gv5r-A5oCS44GX44Gf44CC5b-F44Ga44CB44GL44Gu6YKq5pm65pq06JmQ44GY44KD44Gh44G844GG44GO44KD44GP44Gu546L44KS6Zmk44GL44Gq44GR44KM44Gw44Gq44KJ44Gs44Go5rG65oSP44GX44Gf44CC44Oh44Ot44K544Gr44Gv5pS_5rK744GM44KP44GL44KJ44Gs44CC44Oh44Ot44K544Gv44CB5p2R44Gu54mn5Lq644Gn44GC44KL44CC56yb44KS5ZC544GN44CB576K44Go6YGK44KT44Gn5pqu44GX44Gm5p2l44Gf44CC44GR44KM44Gp44KC6YKq5oKq44Gr5a--44GX44Gm44Gv44CB5Lq65LiA5YCN44Gr5pWP5oSf44Gn44GC44Gj44Gf44CC',
 	w = (...a) => console.warn(a),
 	io = (...a) => console.info(a),
 	err = (...a) => console.error(a),
@@ -23,18 +21,14 @@ const J = JSON,
 	st = (f, w) => setTimeout(f, w),
 	eu = (u) => encodeURI(u),
 	gBl = (b) => b.byteLength,
-	pv = (a) => (a && isS(a) ? Jp(a) : a),
-	ov = (a) => (typeof a === 'object' ? Jp(a) : a),
 	cb = (a) => a,
 	rsm = () => Math.floor(rnd(SlpMs)) + SlpMs,
-	ef = (e, id = '', l = null) => {
+	N = '',
+	ef = (e, id = N, l = null) => {
 		cb(w(`${id} ${e.message}`), w(e.stack));
 		if (l && isFn(l)) cb(l(`${id} ${e.message}`), l(e.stack));
 		return null;
 	};
-function getEF(i, l) {
-	return (e) => ef(e, i, l);
-}
 function slp(s = rsm()) {
 	return pr((r) => st(() => r(), s));
 }
@@ -59,7 +53,7 @@ class W {
 				const c = I.c(),
 					s = (c.width = c.height = i.width),
 					l = s * s * 4,
-					x = c.getContext('2d');
+					x = I.x(c);
 				x.drawImage(i, 0, 0);
 				const d = x.getImageData(0, 0, s, s),
 					n = d.data,
@@ -78,8 +72,8 @@ class W {
 
 	static gK = (k, m, s) => (m[k] ? m[k] : (m[k] = s[Object.keys(m).length]));
 	static p = [
-		['"', ''],
-		[':', ''],
+		['"', N],
+		[':', N],
 		['},{', '='],
 		['[{', '<'],
 		['}]', '>'],
@@ -123,11 +117,11 @@ class W {
 	static dp(a) {
 		const m = {},
 			l = a.length;
-		for (let c = 0; c < l; c += 4) m[((a[c + 0] << 8) | a[c + 1]) + ''] = (a[c + 2] << 8) | a[c + 3];
+		for (let c = 0; c < l; c += 4) m[((a[c + 0] << 8) | a[c + 1]) + N] = (a[c + 2] << 8) | a[c + 3];
 		return m;
 	}
 	static V = null;
-	static init = () => (W.V ? '' : (W.V = W.gV()));
+	static init = () => (W.V ? N : (W.V = W.gV()));
 }
 /*0 BitMatrix*/
 class BM {
@@ -496,7 +490,7 @@ class DD {
 	static dN(m, z) {
 		const b = [],
 			h = [10, 12, 14][z];
-		let t = '',
+		let t = N,
 			l = m.r(h);
 		while (l >= 3) {
 			const n = m.r(10),
@@ -523,12 +517,12 @@ class DD {
 		}
 		return { b, t };
 	}
-	static A = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ $%*+-./:'.split('');
+	static A = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ $%*+-./:'.split(N);
 	static dA(m, z) {
 		const b = [],
 			h = [9, 11, 13][z],
 			A = DD.A;
-		let t = '',
+		let t = N,
 			l = m.r(h);
 		while (l >= 2) {
 			const v = m.r(11),
@@ -548,10 +542,10 @@ class DD {
 	static dB(m, z) {
 		const b = [],
 			h = [8, 16, 16][z];
-		let t = '',
+		let t = N,
 			l = m.r(h);
 		for (let i = 0; i < l; i++) b.push(m.r(8));
-		const a = b.map((b) => '%' + ('0' + b.toString(16)).substr(-2)).join('');
+		const a = b.map((b) => '%' + ('0' + b.toString(16)).substr(-2)).join(N);
 		try {
 			t += decodeURIComponent(a);
 		} catch (e) {
@@ -562,14 +556,14 @@ class DD {
 	static dK(m, z) {
 		const b = [],
 			h = [8, 10, 12][z];
-		let t = '',
+		let t = N,
 			l = m.r(h);
 		for (let i = 0; i < l; i++) {
 			const k = m.r(13);
 			let c = (Math.floor(k / 0xc0) << 8) | k % 0xc0;
 			c += c < 0x1f00 ? 0x8140 : 0xc140;
 			b.push(c >> 8, c & 0xff);
-			t += '';
+			t += N;
 		}
 		return { b, t };
 	}
@@ -579,7 +573,7 @@ class DD {
 			c = [],
 			b = [],
 			r = {
-				t: '',
+				t: N,
 				b,
 				c,
 				v,
@@ -2172,13 +2166,13 @@ class SvgDw {
 		for (let rI = 0; rI < nC; rI++)
 			for (let cI = 0; cI < nC; cI++)
 				if (qrCD.isD(rI, cI)) {
-					const c = z.makeSVG('use', { x: cI + '', y: rI + '' });
+					const c = z.makeSVG('use', { x: cI + N, y: rI + N });
 					c.setAttributeNS('http://www.w3.org/1999/xlink', 'href', '#template');
 					svg.appendChild(c);
 				}
 	}
 	makeSVG(t, a) {
-		const e = document.createElementNS('http://www.w3.org/2000/svg', t);
+		const e = Vw.d.createElementNS('http://www.w3.org/2000/svg', t);
 		for (const [k, v] of Object.entries(a)) if (v) e.setAttribute(k, v);
 		return e;
 	}
@@ -2253,7 +2247,7 @@ class CanvasDw {
 		z.cElm.style.top = opt.height * -1;
 		elm.appendChild(z.cElm);
 		z.elm = elm;
-		z.ctx = z.cElm.getContext('2d');
+		z.ctx = I.x(z.cElm);
 		z.iElm = Vw.ce('img');
 		z.iElm.alt = 'Scan me!';
 		z.iElm.style.display = 'none';
@@ -2343,7 +2337,7 @@ export class QRC {
 				text: opt,
 			};
 		if (opt) for (let i in opt) z.opt[i] = opt[i]; // Overwrites options
-		const e = typeof elm === 'string' ? document.getElementById(elm) : elm,
+		const e = typeof elm === 'string' ? Vw.gi(elm) : elm,
 			DwClass = z.opt.useSVG ? SvgDw : z.opt.useHtml ? HtmlDw : CanvasDw;
 		z.elm = e;
 		z.dw = new DwClass(e, z.opt);
@@ -2524,7 +2518,7 @@ export class B {
 }
 export class Y {
 	static isSameAb = (abA, abB) => Y.a2B(abA) === Y.a2B(abB);
-	static isB64 = (s = '') => s % 4 === 0 && /[+/=0-9a-zA-Z]+/.test(s);
+	static isB64 = (s = N) => s % 4 === 0 && /[+/=0-9a-zA-Z]+/.test(s);
 	static s2u = (s) => te.encode(s);
 	static u2s = (u) => td.decode(u);
 	static a2s = (a) => td.decode(B.u8(a));
@@ -2564,11 +2558,13 @@ export class Y {
 		for (let i = 0; i < l; i++) u[i] = parseInt(h.substr(i * 2, 2), 16);
 		return u;
 	}
-	static u2h = (u) => Array.prototype.map.call(u, (x) => x.toString(16).padStart(2, '0')).join('');
+	static u2h = (u) => Array.prototype.map.call(u, (x) => x.toString(16).padStart(2, '0')).join(N);
+	static s2U = (s) => Y.B2U(Y.a2B(Y.s2u(s).buffer));
 	static a2U = (a) => Y.B2U(Y.a2B(a));
 	static B2a = (B) => Y.b2u(window.atob(B));
 	static U2a = (U) => Y.B2a(Y.U2B(U));
-	static B2U = (B) => (B ? B.split('+').join('-').split('/').join('_').split('=').join('') : B);
+	static U2s = (U) => Y.u2s(B.u8(Y.B2a(Y.U2B(U))));
+	static B2U = (B) => (B ? B.split('+').join('-').split('/').join('_').split('=').join(N) : B);
 	static U2B(U) {
 		const l = U.length,
 			c = l % 4 > 0 ? 4 - (l % 4) : 0;
@@ -2592,7 +2588,7 @@ export class Y {
 	static u2b(u) {
 		const r = [];
 		for (const e of u) r.push(String.fromCharCode(e));
-		return r.join('');
+		return r.join(N);
 	}
 	static b2u(bs) {
 		const l = bs.length,
@@ -2626,20 +2622,20 @@ export class Y {
 		for (let i = 0; i < l; i++) u[i] = p[i];
 		return u;
 	}
-	static b32a = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567'.split('');
+	static b32a = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567'.split(N);
 	static b32t = (() => {
 		const t = {};
 		for (let i = 0; i < 32; i++) t[Y.b32a[i]] = i;
 		return t;
 	})();
 	static b32d(b32) {
-		const a = b32.toUpperCase().replace(/[^A-Z234567]/g, ''),
+		const a = b32.toUpperCase().replace(/[^A-Z234567]/g, N),
 			b = a.padEnd(Math.ceil(a.length / 8) * 8, 'A'),
 			u = B.u8((a.length * 5) / 8);
 		let i = 0,
 			j = 0,
 			k = 0;
-		for (const v of b.split('')) {
+		for (const v of b.split(N)) {
 			i = (i << 5) | Y.b32t[v];
 			j += 5;
 			if (j >= 8) {
@@ -2681,7 +2677,7 @@ export class Y {
         efffffgg
         ggghhhhh
          */
-		return a.join('');
+		return a.join(N);
 	}
 }
 export class Totp {
@@ -2699,12 +2695,8 @@ export class Totp {
 					hmacAlgo
 				)
 			),
-			offset = h[h.length - 1] & 0xf,
-			b =
-				((h[offset] & 0x7f) << 24) |
-				((h[offset + 1] & 0xff) << 16) |
-				((h[offset + 2] & 0xff) << 8) |
-				(h[offset + 3] & 0xff);
+			o = h[h.length - 1] & 0xf,
+			b = ((h[o] & 0x7f) << 24) | ((h[o + 1] & 0xff) << 16) | ((h[o + 2] & 0xff) << 8) | (h[o + 3] & 0xff);
 		let r = `${b % Totp.P[codeDigits]}`;
 		while (r.length < codeDigits) r = '0' + r;
 		return r;
@@ -2758,12 +2750,13 @@ class Cy {
 export class I {
 	static i = () => new Image();
 	static c = () => Vw.ce('canvas');
+	static x = (c) => c.getContext('2d');
 	static compess(u8a) {
 		const b = u8a.length,
 			s = Math.ceil(Math.sqrt(Math.ceil(b / 3) + 2)),
 			c = I.c();
 		c.width = c.height = s;
-		const x = c.getContext('2d'),
+		const x = I.x(c),
 			d = x.createImageData(s, s),
 			l = d.data.length,
 			n = B.u8(l);
@@ -2781,7 +2774,7 @@ export class I {
 			l = s * s * 4,
 			c = I.c();
 		c.width = c.height = s;
-		const x = c.getContext('2d');
+		const x = I.x(c);
 		x.drawImage(i, 0, 0);
 		const d = x.getImageData(0, 0, s, s),
 			n = d.data,
@@ -2813,31 +2806,32 @@ class L {
 	}
 }
 export class Vw {
-	static cnvtGebav2Camel(t = '') {
+	static cnvtGebav2Camel(t = N) {
 		if (!t) return t;
 		const s = t.split('-');
 		for (let i = 1, j = s.length; i < j; i++) {
 			const w = s[i],
 				l = w.length;
-			s[i] = l > 0 ? w.substring(0, 1).toUpperCase() : `${l}` > 1 ? w.substring(1) : '';
+			s[i] = l > 0 ? w.substring(0, 1).toUpperCase() : `${l}` > 1 ? w.substring(1) : N;
 		}
-		return s.join('');
+		return s.join(N);
 	}
 	static addHiddenDiv = (p, att = {}) => Vw.add(p, 'div', att, C.dNone);
 	static add(p, tN, att = {}, sty = {}) {
 		const e = Vw.ce(tN);
 		Vw.sa(e, att);
-		if (att.text) Vw.text(e, att.text);
+		if (att.text) Vw.sT(e, att.text);
 		Vw.sS(e, sty);
 		if (p) p.appendChild(e);
 		return e;
 	}
+	static d = document;
 	static div = (p, att, sty) => Vw.add(p, 'div', att, sty);
 	static h1 = (p, att, sty) => Vw.add(p, 'h1', att, sty);
 	static h2 = (p, att, sty) => Vw.add(p, 'h2', att, sty);
 	static btn = (p, att, sty) => Vw.add(p, 'button', att, sty);
 	static ipt = (p, att, sty) => Vw.add(p, 'input', att, sty);
-	static gi = (i) => document.getElementById(i);
+	static gi = (i) => Vw.d.getElementById(i);
 	static rm = (e) => (e.parentNode ? e.parentNode.removeChild(e) : null);
 	static rc = (e) => {
 		while (e.firstChild) e.removeChild(e.firstChild);
@@ -2851,14 +2845,14 @@ export class Vw {
 	static input = (e, cb) => Vw.ael(e, 'input', cb);
 	static ael = (e, ev, cb) => (e.addEventListener(ev, cb) ? cb : cb);
 	static rel = (e, ev, cb) => (e.removeEventListener(ev, cb) ? cb : cb);
-	static text = (e, msg) => (msg ? (e.textContent = msg) : e.textContent);
+	static sT = (e, msg) => (msg ? (e.textContent = msg) : e.textContent);
 	static aC = (e, cN) => e.classList.add(cN);
 	static rC = (e, cN) => e.classList.remove(cN);
 	static tC = (e, cN) => e.classList.toggle(cN);
 	static sa = (e, att) => Object.keys(att).map((k) => e.setAttribute(k, att[k]));
-	static gB = () => document.getElementsByTagName('body')[0];
+	static gB = () => Vw.d.getElementsByTagName('body')[0];
 	static gT = (p, T) => p.getElementsByTagName(T)[0];
-	static ce = (tN) => document.createElement(tN);
+	static ce = (tN) => Vw.d.createElement(tN);
 	static copy = async (d) => navigator.clipboard.writeText(d);
 	static uO = (a, b) => {
 		const c = {};
@@ -2896,7 +2890,7 @@ export class Vw {
 		const p = 'px',
 			T = 'top',
 			L = 'left',
-			a = (k) => Vw.gS(e, k).split(p).join('') * 1,
+			a = (k) => Vw.gS(e, k).split(p).join(N) * 1,
 			b = (k, x) => Vw.sA(e, k, x + p),
 			m = {},
 			w = window,
@@ -2932,25 +2926,26 @@ class C {
 	static vV = { visibility: 'visible' };
 }
 export class Auth {
-	static ID = async () => await H.d(location.origin + '/ID/' + SALT, 10);
-	static k = async () => await H.d(location.origin + '/Auth/' + SALT, 1230);
+	static salt = Y.U2s(SALT);
+	static ID = async () => await H.d(location.origin + '/ID/' + Auth.salt, 10);
+	static k = async () => await H.d(location.origin + '/Auth/' + Auth.salt, 1230);
 	static E = {};
 	static T = {};
 	static Q = {};
 	static d = 10 * 1000;
 	static as = { transform: ['scaleX(0%) ', 'scaleX(100%)'] };
 	static at = { duration: Auth.d, iterations: 1 };
-	static state = {};
+	static st = {};
 	static c = null;
 	static v = Vw.ce('video');
-	static Types = ['SHA-1', 'SHA-256', 'SHA-384', 'SHA-512'];
+	static TP = ['SHA-1', 'SHA-256', 'SHA-384', 'SHA-512'];
 	static async build() {
 		const A = Auth;
 		const id = await A.ID();
 		if (Vw.gi(id)) return;
-		const body = Vw.gB(),
-			frame = Vw.div(
-				body,
+		const bd = Vw.gB(),
+			fr = Vw.div(
+				bd,
 				{ id },
 				{
 					backgroundColor: '#ccc',
@@ -2965,10 +2960,10 @@ export class Auth {
 					overflowX: 'hidden',
 				}
 			),
-			rowSty = { margin: '10px', display: 'flex', justifyContent: 'space-between' },
-			title = Vw.div(frame, {}, rowSty),
-			inner = Vw.div(
-				frame,
+			rS = { margin: '10px', display: 'flex', justifyContent: 'space-between' },
+			tl = Vw.div(fr, {}, rS),
+			ir = Vw.div(
+				fr,
 				{},
 				{
 					margin: '10px',
@@ -2976,18 +2971,18 @@ export class Auth {
 					border: '5px #aaa dotted',
 				}
 			),
-			ttx = Vw.div(title, { text: 'TOTP Authenticator' }),
-			cBtn = Vw.div(title, { text: '×' }, { margin: '2px', cursor: 'pointer' }),
-			list = Vw.div(
-				inner,
+			a = Vw.div(tl, { text: 'TOTP Authenticator' }),
+			cB = Vw.div(tl, { text: '×' }, { margin: '2px', cursor: 'pointer' }),
+			lt = Vw.div(
+				ir,
 				{},
 				{
 					backgroundColor: '#bbb',
 				}
 			),
-			form = Vw.div(inner, {}, {}),
-			bar = Vw.div(
-				form,
+			fm = Vw.div(ir, {}, {}),
+			ba = Vw.div(
+				fm,
 				{ text: 'add' },
 				{
 					padding: '3px',
@@ -2995,40 +2990,40 @@ export class Auth {
 					cursor: 'pointer',
 				}
 			),
-			input = Vw.div(form, {}, C.dNone),
-			r0 = Vw.div(input, {}, rowSty),
+			ip = Vw.div(fm, {}, C.dNone),
+			r0 = Vw.div(ip, {}, rS),
 			qc = Vw.div(r0, { text: 'QRCode' }, { fontSize: '80%', fontWeight: 'bold' }),
-			qElm = Vw.ipt(r0, { type: 'file' }),
-			qBtn = Vw.btn(r0, { text: 'scan' }),
+			qE = Vw.ipt(r0, { type: 'file' }),
+			qB = Vw.btn(r0, { text: 'scan' }),
 			r01 = Vw.div(
-				input,
+				ip,
 				{ class: 'r01' },
 				{ overflowX: 'scroll', overflowY: 'scroll', maxWidth: '380px', maxHeight: '380px' }
 			),
 			r02 = Vw.div(
-				input,
+				ip,
 				{ class: 'r02' },
-				Vw.uO(rowSty, { fontSize: '40%', wordBreak: 'break-all', maxWidth: '300px' })
+				Vw.uO(rS, { fontSize: '40%', wordBreak: 'break-all', maxWidth: '300px' })
 			),
-			r1 = Vw.div(input, {}, rowSty),
+			r1 = Vw.div(ip, {}, rS),
 			nt = Vw.div(r1, { text: 'Name' }),
-			nElm = Vw.ipt(r1, { size: '20' }, { width: '20em' }),
-			r3 = Vw.div(input, {}, rowSty),
+			nE = Vw.ipt(r1, { size: '20' }, { width: '20em' }),
+			r3 = Vw.div(ip, {}, rS),
 			st = Vw.div(r3, { text: 'Secret' }),
-			sElm = Vw.ipt(r3, { size: '30' }, { fontSize: '50%', width: '20em' }),
-			r4 = Vw.div(input, {}, rowSty),
+			sE = Vw.ipt(r3, { size: '30' }, { fontSize: '50%', width: '20em' }),
+			r4 = Vw.div(ip, {}, rS),
 			pt = Vw.div(r4, { text: 'Period' }),
-			pElm = Vw.ipt(r4, { type: 'Number', value: 30 }, { width: '20em' }),
-			r5 = Vw.div(input, {}, rowSty),
+			pE = Vw.ipt(r4, { type: 'Number', value: 30 }, { width: '20em' }),
+			r5 = Vw.div(ip, {}, rS),
 			tt = Vw.div(r5, { text: 'Type' }),
-			select = Vw.add(r5, 'select', { text: 'type' }, { width: '20em' }),
-			r6 = Vw.div(input, {}, rowSty),
+			sl = Vw.add(r5, 'select', { text: 'type' }, { width: '20em' }),
+			r6 = Vw.div(ip, {}, rS),
 			dn = Vw.div(r6, { text: 'Digits' }),
-			dElm = Vw.ipt(r6, { type: 'Number', value: 6 }, { width: '20em' }),
+			dE = Vw.ipt(r6, { type: 'Number', value: 6 }, { width: '20em' }),
 			r7 = Vw.div(
-				input,
+				ip,
 				{},
-				Vw.uO(rowSty, {
+				Vw.uO(rS, {
 					fontSize: '150%',
 					fontWeight: 'bold',
 					justifyContent: 'center',
@@ -3036,7 +3031,7 @@ export class Auth {
 				})
 			),
 			cP = Vw.div(r7, {}, { display: 'flex', flexDirection: 'column', overflow: 'hidden', width: '10em' }),
-			cElm = Vw.div(cP, {}, { width: '10em', backgroundColor: '#ddd', textAlign: 'center' }),
+			cE = Vw.div(cP, {}, { width: '10em', backgroundColor: '#ddd', textAlign: 'center' }),
 			i = Vw.div(
 				cP,
 				{},
@@ -3048,26 +3043,26 @@ export class Auth {
 					background: C.bi,
 				})
 			),
-			r8 = Vw.div(input, {}, rowSty),
-			aBtn = Vw.btn(r8, { text: 'Auth' }),
-			sBtn = Vw.btn(r8, { text: 'Save' });
-		A.c = Vw.add(frame, 'canvas', {}, { width: '98%', display: 'none' });
-		for (const type of A.Types) Vw.add(select, 'option', { text: type, value: type });
-		select.value = A.Types[0];
-		Vw.click(cBtn, A.close(frame));
+			r8 = Vw.div(ip, {}, rS),
+			aB = Vw.btn(r8, { text: 'Auth' }),
+			sB = Vw.btn(r8, { text: 'Save' });
+		A.c = Vw.add(fr, 'canvas', {}, { width: '98%', display: 'none' });
+		for (const type of A.TP) Vw.add(sl, 'option', { text: type, value: type });
+		sl.value = A.TP[0];
+		Vw.click(cB, A.close(fr));
 		Vw.click(A.c, () => Vw.sS(A.c, C.dNone));
-		Vw.click(title, () => Vw.tS(inner, 'display', 'none', 'block'));
-		Vw.click(bar, () => Vw.tS(input, 'display', 'none', 'block'));
-		A.E = { t: select, n: nElm, s: sElm, p: pElm, d: dElm, l: list };
-		Vw.click(aBtn, A.verify(i, cElm));
-		Vw.click(qBtn, A.sc(r01, r02));
-		Vw.click(sBtn, A.save);
-		Vw.change(qElm, A.getScanimgF(qElm, r01, r02));
-		A.buildList();
-		Vw.beDraggable(frame);
+		Vw.click(tl, () => Vw.tS(ir, 'display', 'none', 'block'));
+		Vw.click(ba, () => Vw.tS(ip, 'display', 'none', 'block'));
+		A.E = { t: sl, n: nE, s: sE, p: pE, d: dE, l: lt };
+		Vw.click(aB, A.verify(i, cE));
+		Vw.click(qB, A.sc(r01, r02));
+		Vw.click(sB, A.save);
+		Vw.change(qE, A.getScanimgF(qE, r01, r02));
+		A.bL();
+		Vw.beDraggable(fr);
 	}
-	static close = (f) => () => Vw.rm(f);
-	static async buildList() {
+	static close = (f) => () => (Auth.st = {} && Vw.rm(f));
+	static async bL() {
 		const A = Auth,
 			e = await A.ld(),
 			l = A.E.l;
@@ -3144,8 +3139,8 @@ export class Auth {
 						background: C.bi,
 					})
 				),
-				rBtn = Vw.btn(o, { text: 'del' }),
-				eBtn = Vw.btn(o, { text: 'export' }),
+				rB = Vw.btn(o, { text: 'del' }),
+				eB = Vw.btn(o, { text: 'export' }),
 				d = e.v[k];
 			Vw.click(t, async () => {
 				const t = st(() => {
@@ -3158,12 +3153,12 @@ export class Auth {
 				b.animate(A.as, A.at);
 				Vw.sS(b, C.vV);
 			});
-			Vw.click(rBtn, async () => {
+			Vw.click(rB, async () => {
 				if (!confirm('Is delete complitly OK?')) return;
 				await A.rm(k);
 				Vw.rm(r);
 			});
-			Vw.click(eBtn, async () => (!confirm('Is show secret OK?') ? '' : await A.gExprtF(q, i, qr, d)()));
+			Vw.click(eB, async () => (!confirm('Is show secret OK?') ? N : await A.gExprtF(q, i, qr, d)()));
 		}
 	}
 	static gExprtF =
@@ -3173,7 +3168,7 @@ export class Auth {
 				n = d.name.split(':'),
 				userId = n.pop(),
 				issuer = n.pop();
-			let s = A.mkOtpURI(issuer, userId, d.secret, d.period, d.type, d.digits),
+			let s = A.mkO(issuer, userId, d.secret, d.period, d.type, d.digits),
 				i = false;
 			while (!i) {
 				try {
@@ -3199,25 +3194,25 @@ export class Auth {
 			ct(A.T[d.name]);
 			A.T[d.name] = t;
 		};
-	static mkOtpURI = (issuer, userId, secret, period, type, digits) =>
+	static mkO = (issuer, userId, secret, period, type, digits) =>
 		'otpauth:/' +
 		`/totp/${eu(issuer)}:${eu(userId)}?secret=${secret}&a=a&issuer=${eu(issuer)}&algorithm=${type
 			.split('-')
-			.join('')}&digits=${digits}&period=${period}`;
+			.join(N)}&digits=${digits}&period=${period}`;
 	static getScanimgF = (qElm, r01, r02) => async () => {
 		const A = Auth;
 		Vw.rc(r01);
-		A.E.t.value = A.Types[0];
-		A.E.n.value = '';
-		A.E.s.value = '';
+		A.E.t.value = A.TP[0];
+		A.E.n.value = N;
+		A.E.s.value = N;
 		A.E.p.value = 30;
 		A.E.d.value = 6;
-		A.state.vyStart = 0;
+		A.st.vyStart = 0;
 		const dURI = await Vw.fr(qElm.files[0]).asDataURL(),
 			p = await A.gSF(dURI, Vw.add(r01, 'canvas'));
-		if (p && p.data) r02.textContent = A.decode(p.data);
+		if (p && p.data) r02.textContent = A.dec(p.data);
 	};
-	static decode(otpURI) {
+	static dec(otpURI) {
 		// io('otpURI:' + otpURI);
 		if (otpURI.indexOf('otpauth') !== 0) return otpURI;
 		const a = otpURI.split('?'),
@@ -3240,7 +3235,7 @@ export class Auth {
 			? m.algorithm.indexOf('-') > 0
 				? m.algorithm
 				: m.algorithm.toUpperCase().split('SHA').join('SHA-')
-			: Auth.Types[0];
+			: Auth.TP[0];
 		return otpURI;
 	}
 	static gSF = async (dURI, c = I.c()) => {
@@ -3252,7 +3247,7 @@ export class Auth {
 			z = w + s,
 			y = h + s;
 		(c.width = z), (c.height = y);
-		const x = c.getContext('2d'),
+		const x = I.x(c),
 			e = x.getImageData(0, 0, z, y);
 		e.data.fill(255);
 		x.putImageData(e, 0, 0);
@@ -3262,24 +3257,24 @@ export class Auth {
 		// io('★gSF p' + p, await H.d(dURI), dURI, p);
 		return p;
 	};
-	static idg = {};
 	static verify = (i, c) => async () => {
-		const e = Auth.E,
+		const A = Auth,
+			e = A.E,
 			s = now();
-		Auth.state.vyStart = s;
-		if (Auth.validate()) {
+		A.st.vyStart = s;
+		if (A.validate()) {
 			Vw.sS(i, C.vV);
-			let o = '';
+			let o = N;
 			c.textContent = o;
-			while (Auth.validate()) {
-				if (Auth.state.vyStart !== s) break;
+			while (A.validate()) {
+				if (A.st.vyStart !== s) break;
 				const p = e.p.value;
 				while (o === c.textContent) {
 					await slp(100);
-					if (Auth.state.vyStart !== s) break;
-					o = await Auth.vy(e.s.value, p, e.d.value, e.t.value);
+					if (A.st.vyStart !== s) break;
+					o = await A.vy(e.s.value, p, e.d.value, e.t.value);
 				}
-				if (Auth.state.vyStart !== s) break;
+				if (A.st.vyStart !== s) break;
 				const n = now(),
 					l = n - Totp.getT(n, 0, p) * p * 1000,
 					m = Math.floor(l / 10 / p),
@@ -3290,8 +3285,8 @@ export class Auth {
 				await slp(d);
 			}
 		}
-		if (Auth.state.vyStart === 0) {
-			c.textContent = '';
+		if (A.st.vyStart === 0) {
+			c.textContent = N;
 			Vw.sS(i, C.vH);
 		}
 	};
@@ -3307,7 +3302,7 @@ export class Auth {
 			digits: b.d.value,
 			type: b.t.value,
 		});
-		await Auth.buildList();
+		await Auth.bL();
 	};
 	static rm = async (n) => await Auth.sd({ name: n, isRm: 1 });
 	static sd = async (d) => {
@@ -3354,7 +3349,7 @@ export class Auth {
 		}
 	};
 	static dwL(c, b, e, color = '#FF3B58') {
-		const x = c.getContext('2d');
+		const x = I.x(c);
 		x.beginPath();
 		x.moveTo(b.x, b.y);
 		x.lineTo(e.x, e.y);
@@ -3363,6 +3358,7 @@ export class Auth {
 		x.stroke();
 	}
 	static dwB(c, code) {
+		if (!code) return;
 		const l = code.location,
 			A = Auth;
 		A.dwL(c, l.topLeftCorner, l.topRightCorner);
@@ -3380,7 +3376,7 @@ export class Auth {
 			// io('A v.readyState :' + v.readyState);
 			if (v.readyState === v.HAVE_ENOUGH_DATA) {
 				const c = Auth.c,
-					x = c.getContext('2d');
+					x = I.x(c);
 				c.height = v.videoHeight;
 				c.width = v.videoWidth;
 				x.drawImage(v, 0, 0, c.width, c.height);
@@ -3388,18 +3384,20 @@ export class Auth {
 					cd = jsQR(id.data, id.width, id.height, {
 						inversionAttempts: 'dontInvert',
 					});
-				io('A code', cd);
 				if (cd) {
 					m.a = 1000;
 					Vw.rc(r01);
-					const dURI = c.toDataURL(),
-						c2 = Vw.add(r01, 'canvas'),
-						p = await Auth.gSF(dURI, c2);
+					const c2 = Vw.add(r01, 'canvas'),
+						x = I.x(c2);
+					c2.height = v.videoHeight;
+					c2.width = v.videoWidth;
+					x.putImageData(id, 0, 0);
 					Auth.dwB(c, cd);
-					Auth.dwB(c2, p);
+					Auth.dwB(c2, cd);
 					Vw.sS(Auth.c, C.dNone);
-					if (p && p.data) r02.textContent = Auth.decode(p.data);
+					if (cd && cd.data) r02.textContent = Auth.dec(cd.data);
 				}
+				io('A code', cd);
 			}
 			io('A v.readyState :' + v.readyState);
 		};
