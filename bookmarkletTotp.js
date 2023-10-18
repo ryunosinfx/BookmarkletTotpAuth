@@ -2902,7 +2902,7 @@ export class Vw {
 					b(T, m.y + m.eY - m.sY);
 				}, 1);
 			};
-		Vw.ael(w, 'mousedown', async (evt) => {
+		Vw.ael(e, 'mousedown', async (evt) => {
 			Vw.sA(e, 'cursor', 'grab');
 			m.x = a(L);
 			m.y = a(T);
@@ -2972,7 +2972,7 @@ export class Auth {
 				}
 			),
 			a = Vw.div(tl, { text: 'TOTP Authenticator' }),
-			cB = Vw.div(tl, { text: '×' }, { margin: '2px', cursor: 'pointer' }),
+			cB = Vw.div(tl, { text: 'X' }, { margin: '2px', cursor: 'pointer' }),
 			lt = Vw.div(
 				ir,
 				{},
