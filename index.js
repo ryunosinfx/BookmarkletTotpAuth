@@ -53,8 +53,17 @@ export class BookmarkletBuilder {
 				.split(k + ' ' + k)
 				.join(k + k);
 		}
+		for (const k of ks) {
+			l = l
+				.split(' ' + k)
+				.join(k)
+				.split(k + ' ')
+				.join(k)
+				.split(k + ' ' + k)
+				.join(k + k);
+		}
 		console.log(l);
-		return `javascript:let a=(()=>{${l};a()});a()`;
+		return `javascript:(function(){${l};a()})()`;
 	}
 	static async getBookmarklet(jsPath, q, d = '/') {
 		const c = location.protocol + '//' + location.host + d;
@@ -65,7 +74,7 @@ export class BookmarkletBuilder {
 }
 const TOTPpath = './bookmarkletTotp.js';
 export class BK {
-	static FirefoxMax = 64 * 1024;
+	static FirefoxMax = 62452;
 	static async build() {
 		const p = Vw.gi('main');
 		const frame = Vw.div(p);
