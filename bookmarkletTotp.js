@@ -1,7 +1,14 @@
 const te = new TextEncoder('utf-8'),
 	td = new TextDecoder('utf-8'),
 	SlpMs = 100,
-	rnd = (a = 1) => Math.random() * a,
+	M = Math,
+	Mf = (n) => M.floor(n),
+	Mc = (n) => M.ceil(n),
+	Mr = (n) => M.round(n),
+	Mq = (n) => M.sqrt(n),
+	Ma = (n) => M.abs(n),
+	// Mp = (n) => M.pow(n),　速度低下のためこれ以上はやらない。
+	rnd = (a = 1) => M.random() * a,
 	J = JSON,
 	Jp = (a) => J.parse(a),
 	Js = (a) => J.stringify(a),
@@ -22,7 +29,7 @@ const te = new TextEncoder('utf-8'),
 	eu = (u) => encodeURI(u),
 	gBl = (b) => b.byteLength,
 	cb = (a) => a,
-	rsm = () => Math.floor(rnd(SlpMs)) + SlpMs,
+	rsm = () => Mf(rnd(SlpMs)) + SlpMs,
 	N = '',
 	ef = (e, id = N, l = null) => {
 		cb(w(`${id} ${e.message}`), w(e.stack));
@@ -314,8 +321,8 @@ class RS {
 		return c !== n ? U.n('RS fEL eC', c, n) : r;
 	}
 	static M(f, e, l) {
-		const s = l.length;
-		const r = U.A(s);
+		const s = l.length,
+			r = U.A(s);
 		for (let i = 0; i < s; i++) {
 			const xi = f.i(l[i]);
 			let d = 1;
@@ -333,8 +340,8 @@ class RS {
 			q = U.u8ca(s2);
 		let e = false;
 		for (let s = 0; s < s2; s++) {
-			const t = f.e(s + f.g);
-			const z = p.e(t);
+			const t = f.e(s + f.g),
+				z = p.e(t);
 			q[q.length - 1 - s] = z;
 			if (z !== 0) e = U.T;
 		}
@@ -380,8 +387,8 @@ class BZ {
 			}
 		const R = BZ.R,
 			M = Math,
-			c = M.ceil(w / R),
-			e = M.ceil(h / R),
+			c = Mc(w / R),
+			e = Mc(h / R),
 			f = new Mx(c, e);
 		for (let i = 0; i < e; i++) {
 			for (let j = 0; j < c; j++) {
@@ -494,8 +501,8 @@ class DD {
 			l = m.r(h);
 		while (l >= 3) {
 			const n = m.r(10),
-				a = Math.floor(n / 100),
-				d = Math.floor(n / 10) % 10,
+				a = Mf(n / 100),
+				d = Mf(n / 10) % 10,
 				c = n % 10;
 			if (n >= 1000) U.e('Invalid numeric value above 999');
 			b.push(48 + a, 48 + d, 48 + c);
@@ -504,7 +511,7 @@ class DD {
 		}
 		if (l === 2) {
 			const n = m.r(7),
-				a = Math.floor(n / 10),
+				a = Mf(n / 10),
 				d = n % 10;
 			if (n >= 100) U.e('Invalid numeric value above 99');
 			b.push(48 + a, 48 + d);
@@ -526,7 +533,7 @@ class DD {
 			l = m.r(h);
 		while (l >= 2) {
 			const v = m.r(11),
-				a = Math.floor(v / 45),
+				a = Mf(v / 45),
 				b = v % 45;
 			b.push(A[a].charCodeAt(0), A[b].charCodeAt(0));
 			t += A[a] + A[b];
@@ -560,7 +567,7 @@ class DD {
 			l = m.r(h);
 		for (let i = 0; i < l; i++) {
 			const k = m.r(13);
-			let c = (Math.floor(k / 0xc0) << 8) | k % 0xc0;
+			let c = (Mf(k / 0xc0) << 8) | k % 0xc0;
 			c += c < 0x1f00 ? 0x8140 : 0xc140;
 			b.push(c >> 8, c & 0xff);
 			t += N;
@@ -646,8 +653,8 @@ class DD {
 /* 5 Decoder*/
 class DC {
 	static n(x, y) {
-		let z = x ^ y;
-		let c = 0;
+		let z = x ^ y,
+			c = 0;
 		while (z) {
 			c++;
 			z &= z - 1;
@@ -694,7 +701,7 @@ class DC {
 		(p) => p.y % 2 === 0,
 		(p) => p.x % 3 === 0,
 		(p) => (p.y + p.x) % 3 === 0,
-		(p) => (Math.floor(p.y / 2) + Math.floor(p.x / 3)) % 2 === 0,
+		(p) => (Mf(p.y / 2) + Mf(p.x / 3)) % 2 === 0,
 		(p) => ((p.x * p.y) % 2) + ((p.x * p.y) % 3) === 0,
 		(p) => (((p.y * p.x) % 2) + ((p.y * p.x) % 3)) % 2 === 0,
 		(p) => (((p.y + p.x) % 2) + ((p.y * p.x) % 3)) % 2 === 0,
@@ -750,7 +757,7 @@ class DC {
 	}
 	static v(m) {
 		const d = m.h,
-			a = Math.floor((d - 17) / 4);
+			a = Mf((d - 17) / 4);
 		if (a <= 6) return W.V[a - 1];
 		let b = 0,
 			c = 0;
@@ -945,7 +952,7 @@ class EX {
 		for (let y = 0; y < l.dim; y++)
 			for (let x = 0; x < l.dim; x++) {
 				const p = mF(x + 0.5, y + 0.5);
-				m.s(x, y, i.g(Math.floor(p.x), Math.floor(p.y)));
+				m.s(x, y, i.g(Mf(p.x), Mf(p.y)));
 			}
 		return {
 			m,
@@ -958,7 +965,7 @@ class LC {
 	static MF = 4;
 	static IQ = 0.5;
 	static XQ = 1.5;
-	static d = (a, b) => Math.sqrt(Math.pow(b.x - a.x, 2) + Math.pow(b.y - a.y, 2));
+	static d = (a, b) => Mq(Math.pow(b.x - a.x, 2) + Math.pow(b.y - a.y, 2));
 	static s = (v) => v.reduce((a, b) => a + b);
 	static P(a, b, c) {
 		const d = LC.d(a, b),
@@ -983,25 +990,25 @@ class LC {
 				LC.s(LC.B(b, a, m, 5)) / 7) /
 			4;
 		if (e < 1) U.e('Invalid module size');
-		const f = Math.round(LC.d(a, b) / e),
-			g = Math.round(LC.d(a, c) / e),
-			d = Math.floor((f + g) / 2) + 7;
+		const f = Mr(LC.d(a, b) / e),
+			g = Mr(LC.d(a, c) / e),
+			d = Mf((f + g) / 2) + 7;
 		return { dim: d + (!(d % 4) ? 1 : d % 4 === 2 ? -1 : 0), mS: e };
 	}
 	static T(o, e, m, l) {
 		const M = Math,
-			a = [{ x: M.floor(o.x), y: M.floor(o.y) }],
-			b = M.abs(e.y - o.y) > M.abs(e.x - o.x),
-			c = M.floor(b ? o.y : o.x),
-			d = M.floor(b ? o.x : o.y),
-			f = M.floor(b ? e.y : e.x),
-			g = M.floor(b ? e.x : e.y),
-			h = M.abs(f - c),
-			j = M.abs(g - d),
+			a = [{ x: Mf(o.x), y: Mf(o.y) }],
+			b = Ma(e.y - o.y) > Ma(e.x - o.x),
+			c = Mf(b ? o.y : o.x),
+			d = Mf(b ? o.x : o.y),
+			f = Mf(b ? e.y : e.x),
+			g = Mf(b ? e.x : e.y),
+			h = Ma(f - c),
+			j = Ma(g - d),
 			k = c < f ? 1 : -1,
 			n = d < g ? 1 : -1,
 			t = [];
-		let r = M.floor(-h / 2),
+		let r = Mf(-h / 2),
 			p = U.T;
 		for (let x = c, y = d; x !== f + k; x += k) {
 			const q = b ? y : x,
@@ -1024,8 +1031,8 @@ class LC {
 	static B(o, e, m, l) {
 		const r = e.y - o.y,
 			u = e.x - o.x,
-			t = LC.T(o, e, m, Math.ceil(l / 2)),
-			a = LC.T(o, { x: o.x - u, y: o.y - r }, m, Math.ceil(l / 2)),
+			t = LC.T(o, e, m, Mc(l / 2)),
+			a = LC.T(o, { x: o.x - u, y: o.y - r }, m, Mc(l / 2)),
 			v = t.shift() + a.shift() - 1;
 		let i;
 		return (i = a.concat(v)).concat.apply(i, t);
@@ -1057,7 +1064,7 @@ class LC {
 				i = LC.S(b, r),
 				j = LC.S(d, r),
 				k = LC.S(g, r),
-				l = M.sqrt(h.e * h.e + i.e * i.e + j.e * j.e + k.e * k.e),
+				l = Mq(h.e * h.e + i.e * i.e + j.e * j.e + k.e * k.e),
 				n = (h.a + i.a + j.a + k.a) / 4,
 				o = (M.pow(h.a - n, 2) + M.pow(i.a - n, 2) + M.pow(j.a - n, 2) + M.pow(k.a - n, 2)) / n;
 			return l + o;
@@ -1068,15 +1075,15 @@ class LC {
 	}
 	static R(m, p) {
 		const M = Math;
-		let l = M.round(p.x);
-		while (m.g(l, M.round(p.y))) l--;
-		let r = M.round(p.x);
-		while (m.g(r, M.round(p.y))) r++;
+		let l = Mr(p.x);
+		while (m.g(l, Mr(p.y))) l--;
+		let r = Mr(p.x);
+		while (m.g(r, Mr(p.y))) r++;
 		const x = (l + r) / 2;
-		let t = M.round(p.y);
-		while (m.g(M.round(x), t)) t--;
-		let b = M.round(p.y);
-		while (m.g(M.round(x), b)) b++;
+		let t = Mr(p.y);
+		while (m.g(Mr(x), t)) t--;
+		let b = Mr(p.y);
+		while (m.g(Mr(x), b)) b++;
 		const y = (t + b) / 2;
 		return { x, y };
 	}
@@ -1099,14 +1106,14 @@ class LC {
 							d = v;
 							const f = LC.s(e) / 7,
 								g =
-									M.abs(e[0] - f) < f &&
-									M.abs(e[1] - f) < f &&
-									M.abs(e[2] - 3 * f) < 3 * f &&
-									M.abs(e[3] - f) < f &&
-									M.abs(e[4] - f) < f &&
+									Ma(e[0] - f) < f &&
+									Ma(e[1] - f) < f &&
+									Ma(e[2] - 3 * f) < 3 * f &&
+									Ma(e[3] - f) < f &&
+									Ma(e[4] - f) < f &&
 									!v,
 								h = LC.s(e.slice(-3)) / 3,
-								k = M.abs(e[2] - h) < h && M.abs(e[3] - h) < h && M.abs(e[4] - h) < h && v;
+								k = Ma(e[2] - h) < h && Ma(e[3] - h) < h && Ma(e[4] - h) < h && v;
 							if (g) {
 								const n = x - e[3] - e[4],
 									o = n - e[2],
@@ -1163,9 +1170,9 @@ class LC {
 			.map((q) => {
 				const x = (q.T.s + q.T.e + q.B.s + q.B.e) / 4,
 					y = (q.T.y + q.B.y + 1) / 2;
-				return m.g(M.round(x), M.round(y))
+				return m.g(Mr(x), Mr(y))
 					? {
-							C: LC.Q({ x: M.round(x), y: M.round(y) }, [1, 1, 3, 1, 1], m),
+							C: LC.Q({ x: Mr(x), y: Mr(y) }, [1, 1, 3, 1, 1], m),
 							x,
 							y,
 							S: LC.s([(q.T.e - q.T.s, q.B.e - q.B.s, q.B.y - q.T.y + 1)]) / 3,
@@ -1245,11 +1252,10 @@ class LC {
 			h = a
 				.map((q) => {
 					const x = (q.T.s + q.T.e + q.B.s + q.B.e) / 4,
-						y = (q.T.y + q.B.y + 1) / 2,
-						M = Math;
-					return !m.g(M.floor(x), M.floor(y))
+						y = (q.T.y + q.B.y + 1) / 2;
+					return !m.g(Mf(x), Mf(y))
 						? 0
-						: { x, y, C: LC.Q({ x: M.floor(x), y: M.floor(y) }, [1, 1, 1], m) + LC.d({ x, y }, g) };
+						: { x, y, C: LC.Q({ x: Mf(x), y: Mf(y) }, [1, 1, 1], m) + LC.d({ x, y }, g) };
 				})
 				.filter((v) => !!v)
 				.sort((a, b) => a.C - b.C);
@@ -1469,7 +1475,7 @@ class QRCM {
 		const b = QRU.gBCHTN(tN); //setupTypeNumber
 		for (let i = 0; i < 18; i++) {
 			const o = !test && ((b >> i) & 1) === 1, //mod
-				a = Math.floor(i / 3),
+				a = Mf(i / 3),
 				j = (i % 3) + n - 8 - 3;
 			m[a][j] = o;
 			m[j][a] = o;
@@ -1687,7 +1693,7 @@ class QRU {
 			case Q.P011:
 				return (i + j) % 3 === 0;
 			case Q.P100:
-				return (Math.floor(i / 2) + Math.floor(j / 3)) % 2 === 0;
+				return (Mf(i / 2) + Mf(j / 3)) % 2 === 0;
 			case Q.P101:
 				return ((i * j) % 2) + ((i * j) % 3) === 0;
 			case Q.P110:
@@ -1804,7 +1810,7 @@ class QRU {
 					lP += 40;
 		let dC = 0;
 		for (let y = 0; y < n; y++) for (let x = 0; x < n; x++) if (q.isD(x, y)) dC++;
-		const r = Math.abs((100 * dC) / n / n - 50) / 5;
+		const r = Ma((100 * dC) / n / n - 50) / 5;
 		lP += r * 10;
 		return lP;
 	}
@@ -2124,7 +2130,7 @@ class QRBB {
 		this.length = 0;
 	}
 	get(i) {
-		return ((this.buffer[Math.floor(i / 8)] >>> (7 - (i % 8))) & 1) === 1;
+		return ((this.buffer[Mf(i / 8)] >>> (7 - (i % 8))) & 1) === 1;
 	}
 	put(n, l) {
 		for (let i = 0; i < l; i++) this.pB(((n >>> (l - i - 1)) & 1) === 1);
@@ -2133,7 +2139,7 @@ class QRBB {
 		return this.length; //getLengthInBits
 	}
 	pB(bit) {
-		const bufI = Math.floor(this.length / 8),
+		const bufI = Mf(this.length / 8),
 			b = this.buffer;
 		if (b.length <= bufI) b.push(0);
 		if (bit) b[bufI] |= 0x80 >>> this.length % 8;
@@ -2195,8 +2201,8 @@ class HtmlDw {
 		const o = this.opt,
 			e = this.elm,
 			nC = qrCD.gMC(),
-			nW = Math.floor(o.width / nC),
-			nH = Math.floor(o.height / nC),
+			nW = Mf(o.width / nC),
+			nH = Mf(o.height / nC),
 			tE = Vw.ce('table'),
 			s = tE.style;
 		s.borderWidth = 0;
@@ -2271,8 +2277,8 @@ class CanvasDw {
 			nC = qrCD.gMC(),
 			nW = o.width / nC,
 			nH = o.height / nC,
-			nHW = Math.round(nW),
-			nRH = Math.round(nH);
+			nHW = Mr(nW),
+			nRH = Mr(nH);
 		i.style.display = 'none';
 		z.cl();
 		for (let rI = 0; rI < nC; rI++) {
@@ -2284,8 +2290,8 @@ class CanvasDw {
 				x.lineWidth = 1;
 				x.fillStyle = iD ? o.colorDark : o.colorLight;
 				x.fillRect(nL, nT, nW, nH);
-				x.strokeRect(Math.floor(nL) + 0.5, Math.floor(nT) + 0.5, nHW, nRH);
-				x.strokeRect(Math.ceil(nL) - 0.5, Math.ceil(nT) - 0.5, nHW, nRH);
+				x.strokeRect(Mf(nL) + 0.5, Mf(nT) + 0.5, nHW, nRH);
+				x.strokeRect(Mc(nL) - 0.5, Mc(nT) - 0.5, nHW, nRH);
 			}
 		}
 		z.iElm.src = z.cElm.toDataURL('image/png');
@@ -2494,7 +2500,8 @@ export class CanvasQRC extends QRC {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-const cy = crypto.subtle;
+const cy = crypto.subtle,
+	wi = window;
 export class H {
 	static async d(m, sc = 1, algo = 'SHA-256', isAB = false) {
 		let r = m.buffer ? (m instanceof Uint8Array ? Y.dpU(m) : B.u8(m.buffer)) : te.encode(m);
@@ -2526,12 +2533,12 @@ export class Y {
 	static s2u = (s) => te.encode(s);
 	static u2s = (u) => td.decode(u);
 	static a2s = (a) => td.decode(B.u8(a));
-	static a2B = (i) => window.btoa(Y.u2b(B.u8(i.buffer ? i.buffer : i)));
-	static u2B = (u) => window.bta(Y.u2b(u));
+	static a2B = (i) => wi.btoa(Y.u2b(B.u8(i.buffer ? i.buffer : i)));
+	static u2B = (u) => wi.bta(Y.u2b(u));
 	static u2I(u) {
 		const f = B.u8(4),
 			l = u.length,
-			n = Math.ceil(l / 4),
+			n = Mc(l / 4),
 			i32a = B.i32(n);
 		for (let i = 0; i < n; i++) {
 			f[0] = u[i + 0];
@@ -2545,7 +2552,7 @@ export class Y {
 	static u8a2u32a(u) {
 		const f = B.u8(4),
 			l = u.length,
-			n = Math.ceil(l / 4),
+			n = Mc(l / 4),
 			u32a = B.u32(n);
 		for (let i = 0; i < n; i++) {
 			f[0] = u[i + 0];
@@ -2565,7 +2572,7 @@ export class Y {
 	static u2h = (u) => Array.prototype.map.call(u, (x) => x.toString(16).padStart(2, '0')).join(N);
 	static s2U = (s) => Y.B2U(Y.a2B(Y.s2u(s).buffer));
 	static a2U = (a) => Y.B2U(Y.a2B(a));
-	static B2a = (B) => Y.b2u(window.atob(B));
+	static B2a = (B) => Y.b2u(wi.atob(B));
 	static U2a = (U) => Y.B2a(Y.U2B(U));
 	static U2s = (U) => Y.u2s(B.u8(Y.B2a(Y.U2B(U))));
 	static B2U = (B) => (B ? B.split('+').join('-').split('/').join('_').split('=').join(N) : B);
@@ -2617,7 +2624,7 @@ export class Y {
 	static N2u(n) {
 		let a = n;
 		const p = [];
-		while (Math.abs(a) > 0) {
+		while (Ma(a) > 0) {
 			p.unshift(a % 256);
 			a = a >> 8;
 		}
@@ -2634,7 +2641,7 @@ export class Y {
 	})();
 	static b32d(b32) {
 		const a = b32.toUpperCase().replace(/[^A-Z234567]/g, N),
-			b = a.padEnd(Math.ceil(a.length / 8) * 8, 'A'),
+			b = a.padEnd(Mc(a.length / 8) * 8, 'A'),
 			u = B.u8((a.length * 5) / 8);
 		let i = 0,
 			j = 0,
@@ -2687,7 +2694,7 @@ export class Y {
 export class Totp {
 	static T0 = 0;
 	static X = 30;
-	static getT = (t = now(), T = Totp.T0, X = Totp.X) => Math.floor((t - T * 1000) / (X * 1000));
+	static getT = (t = now(), T = Totp.T0, X = Totp.X) => Mf((t - T * 1000) / (X * 1000));
 	static P = [1, 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000];
 	static async generate(keyHex, time, codeDigits, hmacAlgo) {
 		// io({ keyHex, time, codeDigits, hmacAlgo });
@@ -2757,7 +2764,7 @@ export class I {
 	static x = (c) => c.getContext('2d');
 	static compess(u8a) {
 		const b = u8a.length,
-			s = Math.ceil(Math.sqrt(Math.ceil(b / 3) + 2)),
+			s = Mc(Mq(Mc(b / 3) + 2)),
 			c = I.c();
 		c.width = c.height = s;
 		const x = I.x(c),
@@ -2895,7 +2902,6 @@ export class Vw {
 			a = (k) => Vw.gS(e, k).split(p).join(N) * 1,
 			b = (k, x) => Vw.sA(e, k, x + p),
 			m = {},
-			w = window,
 			f = (evt) => {
 				st(() => {
 					m.eX = evt.clientX;
@@ -2910,11 +2916,11 @@ export class Vw {
 			m.y = a(T);
 			m.sX = evt.clientX;
 			m.sY = evt.clientY;
-			Vw.ael(w, 'mousemove', f);
+			Vw.ael(wi, 'mousemove', f);
 		});
-		Vw.ael(w, 'mouseup', () => {
+		Vw.ael(wi, 'mouseup', () => {
 			Vw.sA(e, 'cursor', 'auto');
-			Vw.rel(w, 'mousemove', f);
+			Vw.rel(wi, 'mousemove', f);
 		});
 	}
 }
@@ -3244,8 +3250,8 @@ export class Auth {
 		const i = await I.il(dURI),
 			w = i.width,
 			h = i.height,
-			s = Math.ceil(w / 10),
-			o = Math.floor(s / 2),
+			s = Mc(w / 10),
+			o = Mf(s / 2),
 			z = w + s,
 			y = h + s;
 		(c.width = z), (c.height = y);
@@ -3279,7 +3285,7 @@ export class Auth {
 				if (A.st.vyStart !== s) break;
 				const n = now(),
 					l = n - Totp.getT(n, 0, p) * p * 1000,
-					m = Math.floor(l / 10 / p),
+					m = Mf(l / 10 / p),
 					d = p * 1000 - l;
 				c.textContent = o;
 				// io('n:' + n + '/l:' + l + '/m:' + m + '/p:' + p + '/o:' + o + '/d:' + d);
