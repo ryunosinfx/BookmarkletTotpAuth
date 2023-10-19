@@ -6,7 +6,7 @@ Bookmarklet for Totp Auth
 
 ブックマークレットで作動する TOTP ソフトウェアトークンです。
 設定情報は展開したドメインの LocalStrage に暗号化されて保存されます。
-暗号化の鍵相当は、SALT という変数に書いてあります。※中で改変はしています。
+暗号化の鍵相当は、SALT という変数に書いてあります。※キーは他の文字列と結合し、それを SHA-256 でハッシュ化、一定の回数でストレッチした上で Base64URL 形式へ中で改変して使用しています。
 
 ## 使い方
 
@@ -59,15 +59,20 @@ https://ryunosinfx.github.io/BookmarkletTotpAuth/index.html
 
 Generat SALT as URL for bookmarklet
 の項目のテキストエリアにある文言を切り替えて、SALT postEncoding: base64URI の項目を Source of the bookmarklet のソースの SALT に設定してください。
+ソース変更は入力（input イベント)で入力で bookmarklet Link のブックマーク URL に即時に変更をしています。
 
 ## develop
 
 QR コードの読み込みを QRCodeTest のサンプル QR コードでテストできます。
 
-開発は ESmodule なので、ローカルで作動させる場合は http サーバーにホスティングしてください。
-'''node
+開発は ESmodule なので、ローカルで作動させる場合は nodejs の簡易 http サーバーにホスティングしてください。
+
+```
 node server.mjs
-'''
+```
+
+http://localhost:8088/index.html
+でアクセスが可能です。
 
 ## ライセンス
 
