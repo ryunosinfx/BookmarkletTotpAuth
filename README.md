@@ -38,6 +38,23 @@ https://ryunosinfx.github.io/BookmarkletTotpAuth/index.html
     -   save ボタン
         -   保存します。
 
+### Save 済みのデータを使う
+
+保存した直後や再度ブックマークレットを起動すると保存済みの情報をリストで表示します。
+
+情報は各ドメインごとに LocalStorage の実装上、最大５ MB 保存されます。
+ドメインが変わると読み込めません。
+そのドメインで既に 5MB を使い切っていたら保存できません。
+一応 item 名は鍵(SALT)＋オリジン名の SHA256 ハッシュ値の BASE64URL を使って居ますが、かぶった場合は壊れる可能性が有ります。
+
+-   名称エリア
+    -   QR コードから読み込んだ場合は保存名（issuer:name）になります。手入力の場合した字そのままです。
+    -   ここをクリックすると隣の欄に 10 秒間番号が表示されます。
+-   del ボタン
+    -   登録情報を削除します。
+-   export ボタン
+    -   登録情報を QR コードにして 10 秒間表示します。
+
 ### 鍵(SALT)の切り替え
 
 Generat SALT as URL for bookmarklet
@@ -50,4 +67,8 @@ QR コードの読み込みを QRCodeTest のサンプル QR コードでテス�
 開発は ESmodule なので、ローカルで作動させる場合は http サーバーにホスティングしてください。
 '''node
 node server.mjs
-''
+'''
+
+## ライセンス
+
+AGPv3
