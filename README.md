@@ -74,6 +74,6 @@ node server.mjs
 http://localhost:8088/index.html
 でアクセスが可能です。
 
-## ライセンス
+## ライセンス　 Licence
 
-AGPv3
+AGPLv3
